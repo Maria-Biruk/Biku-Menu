@@ -104,7 +104,11 @@
       rgba(255, 255, 255, 0.06),
       transparent 18%
     ),
-    linear-gradient(180deg, rgba(7, 7, 7, 0.94), rgba(14, 11, 10, 0.92));
+    linear-gradient(180deg, rgba(7, 7, 7, 0.82), rgba(14, 11, 10, 0.88)),
+    url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .hero-copy {
