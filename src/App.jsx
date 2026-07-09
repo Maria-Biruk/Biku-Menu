@@ -436,7 +436,7 @@ const menuSections = [
         price: "$7",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80",
+          "https://www.modernhoney.com/wp-content/uploads/2023/03/Baklava-8-crop-scaled.jpg",
       },
       {
         name: "Fruit Salad",
@@ -444,7 +444,7 @@ const menuSections = [
         price: "$6",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+          "https://theforkedspoon.com/wp-content/uploads/2019/07/Fruit-Salad-3-700x1050.jpg",
       },
       {
         name: "Chocolate Cake",
@@ -452,7 +452,7 @@ const menuSections = [
         price: "$8",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80",
+          "https://www.cookingclassy.com/wp-content/uploads/2019/10/chocolate-cake-3.jpg",
       },
       {
         name: "Ice Cream",
@@ -476,7 +476,7 @@ const menuSections = [
         price: "$7",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+          "https://deliciosareceta.com/wp-content/uploads/2026/02/Beorns-Spiced-Mead-Honey-Cake-image_1.webp",
       },
       {
         name: "Cheesecake",
@@ -484,7 +484,7 @@ const menuSections = [
         price: "$8",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80",
+          "https://www.wholesomeyum.com/wp-content/uploads/2017/03/wholesomeyum-Keto-Cheesecake-Recipe-Low-Carb-Sugar-Free-Cheesecake.jpg",
       },
       {
         name: "Tiramisu",
@@ -492,7 +492,7 @@ const menuSections = [
         price: "$9",
         rating: "4.9",
         image:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+          "https://sointofood.com/wp-content/uploads/2025/08/tiramisu-cake-slice-847x1024.webp",
       },
       {
         name: "Crepes with Honey",
@@ -500,7 +500,7 @@ const menuSections = [
         price: "$6",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80",
+          "https://imperialpdx.com/wp-content/uploads/2026/01/honey-lavender-cream-crepes-with-honey-drizzle-featured.jpg",
       },
       {
         name: "Fruit & Cream Parfait",
@@ -508,7 +508,7 @@ const menuSections = [
         price: "$7",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+          "https://walkingonsunshinerecipes.com/wp-content/uploads/2024/07/first-hero-photo-Fruit-Parfait-Recipe-with-Whipped-Cream-1.jpg.webp",
       },
       {
         name: "Ethiopian Sambusa",
@@ -516,7 +516,7 @@ const menuSections = [
         price: "$6",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80",
+          "https://ohsosweetrecipes.sfo3.digitaloceanspaces.com/wp-content/uploads/2025/09/12191132/Sweet-Dessert-Samosa2.png",
       },
       {
         name: "Panna Cotta",
@@ -524,7 +524,7 @@ const menuSections = [
         price: "$8",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+          "https://www.cookingclassy.com/wp-content/uploads/2021/05/panna-cotta-01.jpg",
       },
     ],
   },
@@ -539,7 +539,7 @@ const menuSections = [
         price: "$6",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+          "https://fitfoodiefinds.com/wp-content/uploads/2021/02/avocado-smoothie-7.jpg",
       },
       {
         name: "Mango Juice",
@@ -547,7 +547,7 @@ const menuSections = [
         price: "$5",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1524594154904-6fd1bcffb8a2?auto=format&fit=crop&w=900&q=80",
+          "https://www.crazyvegankitchen.com/wp-content/uploads/2023/06/mango-juice-recipe.jpg",
       },
       {
         name: "Papaya Juice",
@@ -555,7 +555,7 @@ const menuSections = [
         price: "$5",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+          "https://cooksavor.com/wp-content/uploads/2025/07/featured_papaya_juice_final_glass-1024x1024.jpg",
       },
       {
         name: "Mixed Fruit Spris",
@@ -563,7 +563,7 @@ const menuSections = [
         price: "$7",
         rating: "4.9",
         image:
-          "https://images.unsplash.com/photo-1524594154904-6fd1bcffb8a2?auto=format&fit=crop&w=900&q=80",
+  "https://ethiopian-food.org/wp-content/uploads/2024/02/Spris-Ethiopian-Layered-Juice-Recipe.jpg",
       },
       {
         name: "Orange Juice",
@@ -571,7 +571,7 @@ const menuSections = [
         price: "$4",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+          "https://www.kitchentreaty.com/wp-content/uploads/2025/03/fresh-squeezed-orange-juice-1.jpg",
       },
       {
         name: "Guava Juice",
@@ -579,7 +579,7 @@ const menuSections = [
         price: "$5",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1524594154904-6fd1bcffb8a2?auto=format&fit=crop&w=900&q=80",
+          "https://pub-2b91fb1422a24c67b7a354f5f807eb0c.r2.dev/2026/01/guava-nectar-recipe-sweet-tangy-flavor-in-every-glass.jpg",
       },
       {
         name: "Pineapple Juice",
@@ -587,7 +587,7 @@ const menuSections = [
         price: "$5",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+        "https://3.bp.blogspot.com/-T6UUfH6AxMQ/VVL_2it1NGI/AAAAAAAA2DY/uimHcVCSwOU/s1600/pure%2Bpineapple%2Bjuice.jpg",
       },
       {
         name: "Watermelon Juice",
@@ -595,7 +595,7 @@ const menuSections = [
         price: "$4",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1524594154904-6fd1bcffb8a2?auto=format&fit=crop&w=900&q=80",
+          "https://insanelygoodrecipes.com/wp-content/uploads/2022/10/Refreshing-Watermelon-Smoothie-in-a-Glass.jpg",
       },
       {
         name: "Strawberry Juice",
@@ -603,7 +603,7 @@ const menuSections = [
         price: "$6",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+          "https://cdn3.foodviva.com/static-content/food-images/juice-recipes/strawberry-juice-recipe/strawberry-juice-recipe.jpg",
       },
       {
         name: "Banana Juice",
@@ -611,7 +611,7 @@ const menuSections = [
         price: "$5",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1524594154904-6fd1bcffb8a2?auto=format&fit=crop&w=900&q=80",
+          "https://foodtasia.com/wp-content/uploads/2021/07/banana-milkshake-39c.jpg",
       },
       {
         name: "Lemon Juice",
@@ -619,7 +619,7 @@ const menuSections = [
         price: "$4",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+          "https://plantbasedfolk.com/wp-content/uploads/2022/08/Lemon-Mint-Juice.jpg",
       },
       {
         name: "Tamarind Juice",
@@ -627,7 +627,7 @@ const menuSections = [
         price: "$5",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1524594154904-6fd1bcffb8a2?auto=format&fit=crop&w=900&q=80",
+          "https://www.foxyfolksy.com/wp-content/uploads/2022/07/tamarind-juice.jpg",
       },
     ],
   },
