@@ -24,7 +24,7 @@ const menuSections = [
         price: "$15",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80",
+          "https://www.thefoodnearme.com/wp-content/uploads/2025/04/The-Ultimate-Classic-Cheeseburger-with-Perfect-Melted-Cheese-Drip-A-Complete-Guide.webp",
       },
       {
         name: "Cheese Burger",
@@ -32,7 +32,7 @@ const menuSections = [
         price: "$16",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80",
+          "https://easychickenrecipes.com/wp-content/uploads/2023/06/grilled-chicken-sandwich-3-of-6-edited.jpg",
       },
       {
         name: "Chicken Burger",
@@ -40,7 +40,7 @@ const menuSections = [
         price: "$14",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1555939594-58d7cb561adf?auto=format&fit=crop&w=900&q=80",
+          "https://api.photon.aremedia.net.au/wp-content/uploads/sites/12/media/53214/ed-burger.jpg?resize=1200%2C630",
       },
       {
         name: "Double Beef Burger",
@@ -48,7 +48,7 @@ const menuSections = [
         price: "$18",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1563758033-f403bf289096?auto=format&fit=crop&w=900&q=80",
+          "https://insanelygoodrecipes.com/wp-content/uploads/2024/08/Homemade-Mushroom-Swiss-Burger.jpg",
       },
       {
         name: "Mushroom Swiss Burger",
@@ -56,7 +56,7 @@ const menuSections = [
         price: "$17",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1585238341710-4913d3a3a48f?auto=format&fit=crop&w=900&q=80",
+          "https://lilicooks.com/assets/images/1765201701258-d0lor5bp.webp",
       },
       {
         name: "BBQ Bacon Burger",
@@ -64,7 +64,7 @@ const menuSections = [
         price: "$18",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80",
+          "https://satisfyyourcravings.com/wp-content/uploads/2024/05/Spicy-Jalapeno-Cheeseburger-768x769.png",
       },
       {
         name: "Spicy Jalapeño Burger",
@@ -72,7 +72,7 @@ const menuSections = [
         price: "$16",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80",
+          "https://www.noracooks.com/wp-content/uploads/2023/04/veggie-burgers-1-2.jpg",
       },
       {
         name: "Veggie Burger",
@@ -80,7 +80,7 @@ const menuSections = [
         price: "$15",
         rating: "4.4",
         image:
-          "https://images.unsplash.com/photo-1555939594-58d7cb561adf?auto=format&fit=crop&w=900&q=80",
+          "https://www.truthrecipes.com/wp-content/uploads/2024/12/ezzeroual1_A_cutaway_view_of_the_Burger_King_Fish_Sandwich_show_db05f2d8-34fa-4138-a218-5014504d1ddc.png",
       },
       {
         name: "Fish Burger",
@@ -88,7 +88,7 @@ const menuSections = [
         price: "$17",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1563758033-f403bf289096?auto=format&fit=crop&w=900&q=80",
+          "https://whaleycooks.com/wp-content/uploads/2026/02/temp_1771511143689.jpg",
       },
       {
         name: "Ethiopian Spiced Burger",
@@ -127,7 +127,7 @@ const menuSections = [
         price: "$18",
         rating: "4.9",
         image:
-          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+          "https://seeafricatoday.com/wp-content/uploads/2024/04/Doro-Wat-Ethiopian.jpg",
       },
       {
         name: "Tibs",
@@ -135,7 +135,7 @@ const menuSections = [
         price: "$20",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=80",
+          "https://madebyranis.com/wp-content/uploads/2025/12/89eb058e-3d1e-40d0-bd4f-b2b0060e525ftl_vqrg4m.webp",
       },
       {
         name: "Kitfo",
@@ -143,7 +143,7 @@ const menuSections = [
         price: "$22",
         rating: "4.9",
         image:
-          "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=900&q=80",
+          "https://migrationology.com/wp-content/uploads/2013/10/kitfo1.jpg",
       },
       {
         name: "Shiro Wat",
@@ -151,7 +151,7 @@ const menuSections = [
         price: "$15",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1599599810694-d01d0c08e07f?auto=format&fit=crop&w=900&q=80",
+          "https://happyspicyhour.com/wp-content/uploads/2026/03/shiro-wat-ethiopian-chickpea-stew.webp",
       },
       {
         name: "Injera with Mixed Vegetables",
@@ -159,7 +159,7 @@ const menuSections = [
         price: "$16",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=900&q=80",
+          "https://nummyrecipes.com/wp-content/uploads/2025/08/Beyaynetu.jpg",
       },
       {
         name: "Gomen",
@@ -167,7 +167,7 @@ const menuSections = [
         price: "$12",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=80",
+          "https://cookingwithalisa.com/wp-content/uploads/2021/02/Ethiopia-Gomen-plated-close-up-better.jpg",
       },
       {
         name: "Key Wat",
@@ -175,7 +175,7 @@ const menuSections = [
         price: "$19",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+          "https://i.pinimg.com/originals/07/83/9c/07839c6832bd22b56d5af84f49bf69a5.jpg",
       },
       {
         name: "Fasting Combo Platter",
@@ -183,7 +183,7 @@ const menuSections = [
         price: "$17",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=900&q=80",
+          "https://i.pinimg.com/originals/8a/61/d2/8a61d2da682bd6d83e042a5bf6bf33ce.jpg",
       },
       {
         name: "Pasta",
@@ -191,7 +191,7 @@ const menuSections = [
         price: "$16",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+          "https://thumbs.dreamstime.com/b/tomato-spaghetti-black-plate-dark-slate-table-sauce-pasta-classic-italian-cuisine-dish-food-background-popular-186210056.jpg",
       },
       {
         name: "Grilled Fish",
@@ -199,7 +199,7 @@ const menuSections = [
         price: "$21",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=900&q=80",
+          "https://thumbs.dreamstime.com/b/platter-ethiopian-grilled-fish-salad-injera-bread-cuisine-whole-lemon-wedges-spongy-flat-205226614.jpg",
       },
       {
         name: "Firfir",
@@ -230,7 +230,7 @@ const menuSections = [
         price: "$14",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=900&q=80",
+          "https://ohsweetbasil.com/wp-content/uploads/how-to-make-authentic-margherita-pizza-at-home-recipe-4.jpg",
       },
       {
         name: "Pepperoni",
@@ -238,7 +238,7 @@ const menuSections = [
         price: "$15",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1571407-918a92e00e5f?auto=format&fit=crop&w=900&q=80",
+          "https://static.vecteezy.com/system/resources/previews/060/302/560/non_2x/delicious-pepperoni-pizza-slice-isolated-on-transparent-background-png.png",
       },
       {
         name: "Vegetarian Special",
@@ -246,7 +246,7 @@ const menuSections = [
         price: "$16",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=900&q=80",
+          "https://kristineskitchenblog.com/wp-content/uploads/2024/12/veggie-pizza-recipe-09.jpg",
       },
       {
         name: "BBQ Chicken",
@@ -254,7 +254,7 @@ const menuSections = [
         price: "$17",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1571407-918a92e00e5f?auto=format&fit=crop&w=900&q=80",
+          "https://therecipemingle.com/wp-content/uploads/2025/04/salah_pu8659_BBQ_Chicken_Pizza_a_cheesy_smoky_and_slightly_ta_1d207187-119f-4bb2-8a86-42110ea48c6f_2.png",
       },
       {
         name: "Four Cheese",
@@ -262,7 +262,7 @@ const menuSections = [
         price: "$18",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=900&q=80",
+          "https://kitchenatics.com/wp-content/uploads/2020/09/Cheese-pizza-1.jpg",
       },
       {
         name: "Hawaiian",
@@ -270,7 +270,7 @@ const menuSections = [
         price: "$16",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1571407-918a92e00e5f?auto=format&fit=crop&w=900&q=80",
+          "https://i.ytimg.com/vi/q_4GlkxWzas/maxresdefault.jpg",
       },
       {
         name: "Meat Lovers",
@@ -278,7 +278,7 @@ const menuSections = [
         price: "$19",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=900&q=80",
+          "https://chasety.com/wp-content/uploads/2024/05/realchasecurtis_Meat_Lovers_Pizza_sitting_on_parchment_paper_on_dc92db32-1213-4e66-b7e1-0d34e0506af1.png",
       },
       {
         name: "Mushroom & Truffle",
@@ -286,7 +286,7 @@ const menuSections = [
         price: "$20",
         rating: "4.9",
         image:
-          "https://images.unsplash.com/photo-1571407-918a92e00e5f?auto=format&fit=crop&w=900&q=80",
+          "https://itsonly.recipes/images/recipeimages/savory-mushroom-truffle-pizza.webp",
       },
       {
         name: "Spicy Beef",
@@ -294,7 +294,7 @@ const menuSections = [
         price: "$17",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=900&q=80",
+          "https://embed.widencdn.net/img/beef/gxsxp5i3do/1540x1284px/spicy-nacho-beef-pizza-square.eps?keep=c",
       },
       {
         name: "Ethiopian Special",
@@ -302,7 +302,7 @@ const menuSections = [
         price: "$21",
         rating: "4.9",
         image:
-          "https://images.unsplash.com/photo-1571407-918a92e00e5f?auto=format&fit=crop&w=900&q=80",
+          "https://i.ytimg.com/vi/tCevxpUD0WU/maxresdefault.jpg",
       },
       {
         name: "Spinach & Feta Pizza",
@@ -333,7 +333,7 @@ const menuSections = [
         price: "$3",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1505577058444-a3dab4c70455?auto=format&fit=crop&w=900&q=80",
+          "https://c8.alamy.com/comp/M4ETGJ/bottles-and-cans-of-coca-cola-M4ETGJ.jpg",
       },
       {
         name: "Pepsi",
@@ -341,7 +341,7 @@ const menuSections = [
         price: "$3",
         rating: "4.4",
         image:
-          "https://images.unsplash.com/photo-1459191730420-5f9b7f95b68d?auto=format&fit=crop&w=900&q=80",
+          "https://upload.wikimedia.org/wikipedia/commons/d/dd/Pepsi_Can.jpg",
       },
       {
         name: "Sprite",
@@ -349,7 +349,7 @@ const menuSections = [
         price: "$3",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1505577058444-a3dab4c70455?auto=format&fit=crop&w=900&q=80",
+          "https://pngfre.com/wp-content/uploads/Sprite-24.png",
       },
       {
         name: "Fanta (Orange)",
@@ -357,7 +357,7 @@ const menuSections = [
         price: "$3",
         rating: "4.4",
         image:
-          "https://images.unsplash.com/photo-1459191730420-5f9b7f95b68d?auto=format&fit=crop&w=900&q=80",
+          "https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png",
       },
       {
         name: "Mirinda",
@@ -365,7 +365,7 @@ const menuSections = [
         price: "$3",
         rating: "4.3",
         image:
-          "https://images.unsplash.com/photo-1505577058444-a3dab4c70455?auto=format&fit=crop&w=900&q=80",
+          "https://5.imimg.com/data5/SELLER/Default/2025/9/546826979/QI/CY/HT/69827317/750-ml-mirinda-orange-soft-drink-1000x1000.jpg",
       },
       {
         name: "Ambo Water",
@@ -373,7 +373,7 @@ const menuSections = [
         price: "$2",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1459191730420-5f9b7f95b68d?auto=format&fit=crop&w=900&q=80",
+          "https://img.sewasew.com/definitions/6ea0bb334b724267820e02c1b81e774c_159_318",
       },
       {
         name: "Highland Water",
@@ -381,7 +381,7 @@ const menuSections = [
         price: "$2",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1505577058444-a3dab4c70455?auto=format&fit=crop&w=900&q=80",
+          "https://www.thebottleclub.com/cdn/shop/files/highland-spring-still-water-bottle-multipack-24-x-330-ml-water-32878829895795.jpg?v=1703682387",
       },
       {
         name: "Schweppes",
@@ -389,7 +389,7 @@ const menuSections = [
         price: "$3",
         rating: "4.4",
         image:
-          "https://images.unsplash.com/photo-1459191730420-5f9b7f95b68d?auto=format&fit=crop&w=900&q=80",
+          "https://www.coca-cola.com/content/dam/onexp/za/en/schweppes-last-version/schweppes-tonic-water.png",
       },
       {
         name: "Fanta Lemon",
@@ -397,7 +397,7 @@ const menuSections = [
         price: "$3",
         rating: "4.4",
         image:
-          "https://images.unsplash.com/photo-1505577058444-a3dab4c70455?auto=format&fit=crop&w=900&q=80",
+          "https://www.kff.co.uk/images_products/HD_059905_FANTA-Lemon-1.jpg",
       },
       {
         name: "Coca-Cola Zero",
@@ -405,7 +405,7 @@ const menuSections = [
         price: "$3",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1459191730420-5f9b7f95b68d?auto=format&fit=crop&w=900&q=80",
+          "https://www.pngkit.com/png/full/364-3641413_a-selection-of-coca-cola-zero-bottles-and.png",
       },
       {
         name: "Diet Coke",
@@ -642,7 +642,7 @@ const menuSections = [
         price: "$4",
         rating: "4.9",
         image:
-          "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80",
+          "https://www.whatsoutaddis.com/wp-content/uploads/2023/01/EonRvPEXIAUWeZK.jpg",
       },
       {
         name: "Macchiato",
@@ -650,7 +650,7 @@ const menuSections = [
         price: "$4",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1510626176961-4b2ec2ec83b5?auto=format&fit=crop&w=900&q=80",
+          "https://www.handycookbook.com/wp-content/uploads/2023/04/Macchiato-.jpeg",
       },
       {
         name: "Cappuccino",
@@ -658,7 +658,7 @@ const menuSections = [
         price: "$4",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80",
+        "https://images.wallpaperscraft.com/image/single/coffee_cappuccino_cup_136699_3840x2160.jpg",
       },
       {
         name: "Espresso",
@@ -666,7 +666,7 @@ const menuSections = [
         price: "$3",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1510626176961-4b2ec2ec83b5?auto=format&fit=crop&w=900&q=80",
+          "https://i5.walmartimages.com/seo/Espresso-Cups-Set-2-4-OZ-Double-Spouts-Cups-Espresso-Shot-Glasses-Milk-Cup-Handle-Clear-Glass-Espresso-Accessories-Espresso-Machine-Small_4f14cb95-44a0-4137-be88-828cd9ca457e.a1d88154d4917f8b339b16dd8730bb02.jpeg",
       },
       {
         name: "Latte",
@@ -674,7 +674,7 @@ const menuSections = [
         price: "$5",
         rating: "4.7",
         image:
-          "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80",
+          "https://www.latteartguide.com/wp-content/uploads/2023/05/Curved-cup-latte-art-scaled.jpg",
       },
       {
         name: "Black Tea",
@@ -682,7 +682,7 @@ const menuSections = [
         price: "$3",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1510626176961-4b2ec2ec83b5?auto=format&fit=crop&w=900&q=80",
+          "https://imgcdn.stablediffusionweb.com/2024/3/20/801cbf80-ee76-4113-aa7c-6fe0dfa65129.jpg",
       },
       {
         name: "Spiced Tea",
@@ -690,7 +690,7 @@ const menuSections = [
         price: "$3",
         rating: "4.6",
         image:
-          "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80",
+          "https://thebalemoya.com/cdn/shop/articles/ethiopiantea.png?v=1709920159",
       },
       {
         name: "Hot Chocolate",
@@ -698,7 +698,7 @@ const menuSections = [
         price: "$4",
         rating: "4.8",
         image:
-          "https://images.unsplash.com/photo-1510626176961-4b2ec2ec83b5?auto=format&fit=crop&w=900&q=80",
+          "https://vintagekitchennotes.com/wp-content/uploads/2023/11/Hot-chocolate-with-cream.jpeg",
       },
       {
         name: "Ginger Tea",
@@ -706,7 +706,7 @@ const menuSections = [
         price: "$3",
         rating: "4.5",
         image:
-          "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80",
+          "https://image.freepik.com/free-photo/glass-cup-hot-ginger-tea-with-ginger-rhizome-sliced-isolated-white-background_252965-22.jpg",
       },
       {
         name: "Herbal Tea",
