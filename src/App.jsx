@@ -740,8 +740,8 @@ function SectionNav({ active, onSelect }) {
   return (
     <nav className="site-nav">
       <div className="site-name">
-        <span className="brand">Biku</span>
-        <span className="brand-accent">Fine</span>
+        <span className="brand">Digital</span>
+        <span className="brand-accent">Menu</span>
       </div>
       <div className="links">
         {sections.slice(1).map((section) => (
@@ -775,8 +775,6 @@ function MenuCard({ item }) {
         <h3>{item.name}</h3>
         <p>{item.description}</p>
         <div className="card-footer">
-          <span className="rating">★★★★★</span>
-          <span className="rating-value">({item.rating})</span>
           <span className="price">{item.price}</span>
         </div>
       </div>
@@ -818,7 +816,7 @@ function App() {
       <main>
         <section id="hero" className="hero-section">
           <div className="hero-copy">
-            <p className="hero-small">Biku Fine</p>
+            <p className="hero-small">Digital Menu</p>
             <h1>{hero.title}</h1>
             <p>{hero.description}</p>
           </div>
@@ -833,6 +831,7 @@ function App() {
           const displayItems = isExpanded
             ? section.items
             : section.items.slice(0, initialItemsCount);
+          const isOddSection = index % 2 === 0;
 
           return (
             <section key={section.id} id={section.id} className="menu-section">
@@ -845,7 +844,7 @@ function App() {
                 {swapColumns ? (
                   <>
                     <div className="cards-column">
-                      <div className="cards-grid small-cards">
+                      <div className={`cards-grid small-cards ${isOddSection ? 'two-columns' : ''}`}>
                         {displayItems.map((item) => (
                           <MenuCard key={item.name} item={item} />
                         ))}
@@ -876,7 +875,7 @@ function App() {
                       }}
                     />
                     <div className="cards-column">
-                      <div className="cards-grid small-cards">
+                      <div className={`cards-grid small-cards ${isOddSection ? 'two-columns' : ''}`}>
                         {displayItems.map((item) => (
                           <MenuCard key={item.name} item={item} />
                         ))}
@@ -908,9 +907,6 @@ function App() {
           >
             <div className="offer-banner-overlay">
               <h2>Get 20% Off On Your First Order</h2>
-              <button className="book-table-btn" type="button">
-                BOOK TABLE
-              </button>
             </div>
           </div>
           <div className="offer-features offer-features-row">
@@ -930,31 +926,48 @@ function App() {
         </section>
 
         <footer className="site-footer">
-          <div className="footer-grid">
+          <div className="footer-container">
             <div className="footer-brand">
-              <p className="footer-title">Biku Fine</p>
-              <p className="footer-text">
+              <h3>Digital Menu</h3>
+              <p>
                 A modern dining experience designed around seasonal flavors,
                 thoughtfully composed dishes, and relaxed hospitality.
               </p>
             </div>
-            <div className="footer-section">
-              <p className="footer-heading">Explore</p>
-              <nav aria-label="Footer navigation">
-                <a href="#hero">Home</a>
-                <a href="#burger">Burger</a>
-                <a href="#pizza">Pizza</a>
-                <a href="#desserts">Desserts</a>
-              </nav>
-            </div>
-            <div className="footer-section">
-              <p className="footer-heading">Contact</p>
-              <p>hello@bikufine.com</p>
-              <p>Open daily 11am–10pm</p>
+            <div className="footer-links">
+              <div className="footer-column">
+                <h4>Quick Links</h4>
+                <nav aria-label="Footer navigation">
+                  <a href="#hero">Home</a>
+                  <a href="#burger">Burger</a>
+                  <a href="#foods">Foods</a>
+                  <a href="#pizza">Pizza</a>
+                </nav>
+              </div>
+              <div className="footer-column">
+                <h4>More</h4>
+                <nav aria-label="Footer navigation">
+                  <a href="#soft-drinks">Soft Drinks</a>
+                  <a href="#juice">Juice</a>
+                  <a href="#desserts">Desserts</a>
+                  <a href="#hot-drinks">Hot Drinks</a>
+                </nav>
+              </div>
+              <div className="footer-column">
+                <h4>Contact</h4>
+                <p>hello@bikufine.com</p>
+                <p>+251 911 123 456</p>
+                <p>Open daily 11am–10pm</p>
+              </div>
             </div>
           </div>
-          <div className="footer-note">
-            © 2026 Biku Fine. Crafted with care.
+          <div className="footer-bottom">
+            <p>© 2026 Digital Menu. All rights reserved.</p>
+            <div className="footer-social">
+              <a href="#" aria-label="Facebook">Facebook</a>
+              <a href="#" aria-label="Instagram">Instagram</a>
+              <a href="#" aria-label="Twitter">Twitter</a>
+            </div>
           </div>
         </footer>
       </main>
