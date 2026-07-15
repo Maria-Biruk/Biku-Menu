@@ -1,805 +1,268 @@
-import { useMemo, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./App.css";
+import { DatabaseProvider, useDatabase } from "./db";
+import { translations, formatPrice } from "./i18n";
 
-const sections = [
-  { id: "hero", label: "Home" },
-  { id: "burger", label: "Burger" },
-  { id: "foods", label: "Foods" },
-  { id: "pizza", label: "Pizza" },
-  { id: "soft-drinks", label: "Soft Drinks" },
-  { id: "juice", label: "Juice" },
-  { id: "desserts", label: "Desserts" },
-  { id: "hot-drinks", label: "Hot Drinks" },
-];
+import AuthPage from "./components/AuthPage";
+import AdminDashboard from "./components/AdminDashboard";
+import KitchenDashboard from "./components/KitchenDashboard";
+import WaiterDashboard from "./components/WaiterDashboard";
 
-const menuSections = [
-  {
-    id: "burger",
-    title: "Burgers",
-    subtitle: "Crafted to perfection",
-    items: [
-      {
-        name: "Classic Beef Burger",
-        description: "Beef patty, lettuce, tomato, house sauce",
-        price: "$15",
-        rating: "4.5",
-        image:
-          "https://www.thefoodnearme.com/wp-content/uploads/2025/04/The-Ultimate-Classic-Cheeseburger-with-Perfect-Melted-Cheese-Drip-A-Complete-Guide.webp",
-      },
-      {
-        name: "Cheese Burger",
-        description: "Beef patty, melted cheddar, pickles, mustard",
-        price: "$16",
-        rating: "4.6",
-        image:
-          "https://easychickenrecipes.com/wp-content/uploads/2023/06/grilled-chicken-sandwich-3-of-6-edited.jpg",
-      },
-      {
-        name: "Chicken Burger",
-        description: "Grilled chicken breast, lettuce, mayo, tomato",
-        price: "$14",
-        rating: "4.5",
-        image:
-          "https://api.photon.aremedia.net.au/wp-content/uploads/sites/12/media/53214/ed-burger.jpg?resize=1200%2C630",
-      },
-      {
-        name: "Double Beef Burger",
-        description: "Two beef patties, double cheese, onion, ketchup",
-        price: "$18",
-        rating: "4.7",
-        image:
-          "https://insanelygoodrecipes.com/wp-content/uploads/2024/08/Homemade-Mushroom-Swiss-Burger.jpg",
-      },
-      {
-        name: "Mushroom Swiss Burger",
-        description: "Beef patty, sautéed mushrooms, Swiss cheese",
-        price: "$17",
-        rating: "4.6",
-        image:
-          "https://lilicooks.com/assets/images/1765201701258-d0lor5bp.webp",
-      },
-      {
-        name: "BBQ Bacon Burger",
-        description: "Beef patty, crispy bacon, BBQ sauce, cheddar",
-        price: "$18",
-        rating: "4.7",
-        image:
-          "https://satisfyyourcravings.com/wp-content/uploads/2024/05/Spicy-Jalapeno-Cheeseburger-768x769.png",
-      },
-      {
-        name: "Spicy Jalapeño Burger",
-        description: "Beef patty, jalapeños, pepper jack cheese, spicy mayo",
-        price: "$16",
-        rating: "4.5",
-        image:
-          "https://www.noracooks.com/wp-content/uploads/2023/04/veggie-burgers-1-2.jpg",
-      },
-      {
-        name: "Veggie Burger",
-        description: "Veggie patty, lettuce, tomato, tahini sauce",
-        price: "$15",
-        rating: "4.4",
-        image:
-          "https://www.truthrecipes.com/wp-content/uploads/2024/12/ezzeroual1_A_cutaway_view_of_the_Burger_King_Fish_Sandwich_show_db05f2d8-34fa-4138-a218-5014504d1ddc.png",
-      },
-      {
-        name: "Fish Burger",
-        description: "Fried fish fillet, lettuce, tartar sauce",
-        price: "$17",
-        rating: "4.6",
-        image:
-          "https://whaleycooks.com/wp-content/uploads/2026/02/temp_1771511143689.jpg",
-      },
-      {
-        name: "Ethiopian Spiced Burger",
-        description: "Beef patty, berbere spice, mayo, red onion",
-        price: "$19",
-        rating: "4.8",
-        image:
-          "https://images.unsplash.com/photo-1585238341710-4913d3a3a48f?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Egg & Bacon Burger",
-        description: "Beef patty, fried egg, bacon, cheddar",
-        price: "$18",
-        rating: "4.7",
-        image:
-          "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Habesha Lamb Burger",
-        description: "Spiced lamb patty, berbere, awaze mayo, red onion",
-        price: "$20",
-        rating: "4.9",
-        image:
-          "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
-  },
-  {
-    id: "foods",
-    title: "Foods",
-    subtitle: "The heart of the table",
-    items: [
-      {
-        name: "Doro Wat",
-        description: "Chicken, berbere sauce, hard-boiled egg, onion",
-        price: "$18",
-        rating: "4.9",
-        image:
-          "https://seeafricatoday.com/wp-content/uploads/2024/04/Doro-Wat-Ethiopian.jpg",
-      },
-      {
-        name: "Tibs",
-        description: "Sautéed meat, onion, garlic, rosemary",
-        price: "$20",
-        rating: "4.8",
-        image:
-          "https://madebyranis.com/wp-content/uploads/2025/12/89eb058e-3d1e-40d0-bd4f-b2b0060e525ftl_vqrg4m.webp",
-      },
-      {
-        name: "Kitfo",
-        description: "Minced raw beef, mitmita spice, clarified butter",
-        price: "$22",
-        rating: "4.9",
-        image:
-          "https://migrationology.com/wp-content/uploads/2013/10/kitfo1.jpg",
-      },
-      {
-        name: "Shiro Wat",
-        description: "Chickpea powder, garlic, onion, berbere",
-        price: "$15",
-        rating: "4.7",
-        image:
-          "https://happyspicyhour.com/wp-content/uploads/2026/03/shiro-wat-ethiopian-chickpea-stew.webp",
-      },
-      {
-        name: "Injera with Mixed Vegetables",
-        description: "Injera, lentils, cabbage, collard greens",
-        price: "$16",
-        rating: "4.8",
-        image:
-          "https://nummyrecipes.com/wp-content/uploads/2025/08/Beyaynetu.jpg",
-      },
-      {
-        name: "Gomen",
-        description: "Collard greens, garlic, onion, spices",
-        price: "$12",
-        rating: "4.6",
-        image:
-          "https://cookingwithalisa.com/wp-content/uploads/2021/02/Ethiopia-Gomen-plated-close-up-better.jpg",
-      },
-      {
-        name: "Key Wat",
-        description: "Beef, berbere sauce, onion, garlic",
-        price: "$19",
-        rating: "4.8",
-        image:
-          "https://i.pinimg.com/originals/07/83/9c/07839c6832bd22b56d5af84f49bf69a5.jpg",
-      },
-      {
-        name: "Fasting Combo Platter",
-        description: "Lentils, shiro, gomen, injera",
-        price: "$17",
-        rating: "4.7",
-        image:
-          "https://i.pinimg.com/originals/8a/61/d2/8a61d2da682bd6d83e042a5bf6bf33ce.jpg",
-      },
-      {
-        name: "Pasta",
-        description: "Pasta, tomato sauce, herbs, parmesan",
-        price: "$16",
-        rating: "4.6",
-        image:
-          "https://thumbs.dreamstime.com/b/tomato-spaghetti-black-plate-dark-slate-table-sauce-pasta-classic-italian-cuisine-dish-food-background-popular-186210056.jpg",
-      },
-      {
-        name: "Grilled Fish",
-        description: "Fish fillet, onion, tomato, spices",
-        price: "$21",
-        rating: "4.8",
-        image:
-          "https://thumbs.dreamstime.com/b/platter-ethiopian-grilled-fish-salad-injera-bread-cuisine-whole-lemon-wedges-spongy-flat-205226614.jpg",
-      },
-      {
-        name: "Firfir",
-        description: "Torn injera, berbere sauce, onion, clarified butter",
-        price: "$16",
-        rating: "4.7",
-        image:
-          "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Zilzil Tibs",
-        description: "Thin-sliced beef strips, rosemary, garlic, jalapeño",
-        price: "$22",
-        rating: "4.9",
-        image:
-          "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
-  },
-  {
-    id: "pizza",
-    title: "Pizza",
-    subtitle: "Wood-fired classics",
-    items: [
-      {
-        name: "Margherita",
-        description: "Tomato sauce, mozzarella, fresh basil",
-        price: "$14",
-        rating: "4.5",
-        image:
-          "https://ohsweetbasil.com/wp-content/uploads/how-to-make-authentic-margherita-pizza-at-home-recipe-4.jpg",
-      },
-      {
-        name: "Pepperoni",
-        description: "Tomato sauce, mozzarella, pepperoni slices",
-        price: "$15",
-        rating: "4.6",
-        image:
-          "https://static.vecteezy.com/system/resources/previews/060/302/560/non_2x/delicious-pepperoni-pizza-slice-isolated-on-transparent-background-png.png",
-      },
-      {
-        name: "Vegetarian Special",
-        description: "Bell peppers, mushrooms, olives, onion",
-        price: "$16",
-        rating: "4.7",
-        image:
-          "https://kristineskitchenblog.com/wp-content/uploads/2024/12/veggie-pizza-recipe-09.jpg",
-      },
-      {
-        name: "BBQ Chicken",
-        description: "Grilled chicken, BBQ sauce, red onion, mozzarella",
-        price: "$17",
-        rating: "4.8",
-        image:
-          "https://therecipemingle.com/wp-content/uploads/2025/04/salah_pu8659_BBQ_Chicken_Pizza_a_cheesy_smoky_and_slightly_ta_1d207187-119f-4bb2-8a86-42110ea48c6f_2.png",
-      },
-      {
-        name: "Four Cheese",
-        description: "Mozzarella, gorgonzola, parmesan, provolone",
-        price: "$18",
-        rating: "4.7",
-        image:
-          "https://kitchenatics.com/wp-content/uploads/2020/09/Cheese-pizza-1.jpg",
-      },
-      {
-        name: "Hawaiian",
-        description: "Ham, pineapple, mozzarella",
-        price: "$16",
-        rating: "4.5",
-        image:
-          "https://i.ytimg.com/vi/q_4GlkxWzas/maxresdefault.jpg",
-      },
-      {
-        name: "Meat Lovers",
-        description: "Pepperoni, sausage, bacon, ground beef",
-        price: "$19",
-        rating: "4.8",
-        image:
-          "https://chasety.com/wp-content/uploads/2024/05/realchasecurtis_Meat_Lovers_Pizza_sitting_on_parchment_paper_on_dc92db32-1213-4e66-b7e1-0d34e0506af1.png",
-      },
-      {
-        name: "Mushroom & Truffle",
-        description: "Mushrooms, truffle oil, mozzarella, thyme",
-        price: "$20",
-        rating: "4.9",
-        image:
-          "https://itsonly.recipes/images/recipeimages/savory-mushroom-truffle-pizza.webp",
-      },
-      {
-        name: "Spicy Beef",
-        description: "Spiced ground beef, chili flakes, onion, mozzarella",
-        price: "$17",
-        rating: "4.6",
-        image:
-          "https://embed.widencdn.net/img/beef/gxsxp5i3do/1540x1284px/spicy-nacho-beef-pizza-square.eps?keep=c",
-      },
-      {
-        name: "Ethiopian Special",
-        description: "Spiced minced meat, awaze sauce, onion, mozzarella",
-        price: "$21",
-        rating: "4.9",
-        image:
-          "https://i.ytimg.com/vi/tCevxpUD0WU/maxresdefault.jpg",
-      },
-      {
-        name: "Spinach & Feta Pizza",
-        description: "Spinach, feta cheese, garlic, olive oil",
-        price: "$18",
-        rating: "4.7",
-        image:
-          "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Ethiopian Vegetarian Pizza",
-        description: "Shiro spread, mozzarella, jalapeño, onion",
-        price: "$19",
-        rating: "4.8",
-        image:
-          "https://images.unsplash.com/photo-1571407-918a92e00e5f?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
-  },
-  {
-    id: "soft-drinks",
-    title: "Soft Drinks",
-    subtitle: "Ice-cold refreshment",
-    items: [
-      {
-        name: "Coca-Cola",
-        description: "Classic cola served chilled",
-        price: "$3",
-        rating: "4.5",
-        image:
-          "https://c8.alamy.com/comp/M4ETGJ/bottles-and-cans-of-coca-cola-M4ETGJ.jpg",
-      },
-      {
-        name: "Pepsi",
-        description: "Refreshing cola with a crisp taste",
-        price: "$3",
-        rating: "4.4",
-        image:
-          "https://upload.wikimedia.org/wikipedia/commons/d/dd/Pepsi_Can.jpg",
-      },
-      {
-        name: "Sprite",
-        description: "Lemon-lime soda, crisp and refreshing",
-        price: "$3",
-        rating: "4.5",
-        image:
-          "https://pngfre.com/wp-content/uploads/Sprite-24.png",
-      },
-      {
-        name: "Fanta (Orange)",
-        description: "Sweet orange soda",
-        price: "$3",
-        rating: "4.4",
-        image:
-          "https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png",
-      },
-      {
-        name: "Mirinda",
-        description: "Citrus flavored soft drink",
-        price: "$3",
-        rating: "4.3",
-        image:
-          "https://5.imimg.com/data5/SELLER/Default/2025/9/546826979/QI/CY/HT/69827317/750-ml-mirinda-orange-soft-drink-1000x1000.jpg",
-      },
-      {
-        name: "Ambo Water",
-        description: "Ethiopian sparkling mineral water",
-        price: "$2",
-        rating: "4.6",
-        image:
-          "https://img.sewasew.com/definitions/6ea0bb334b724267820e02c1b81e774c_159_318",
-      },
-      {
-        name: "Highland Water",
-        description: "Ethiarian still mineral water",
-        price: "$2",
-        rating: "4.5",
-        image:
-          "https://www.thebottleclub.com/cdn/shop/files/highland-spring-still-water-bottle-multipack-24-x-330-ml-water-32878829895795.jpg?v=1703682387",
-      },
-      {
-        name: "Schweppes",
-        description: "Tonic or soda water",
-        price: "$3",
-        rating: "4.4",
-        image:
-          "https://www.coca-cola.com/content/dam/onexp/za/en/schweppes-last-version/schweppes-tonic-water.png",
-      },
-      {
-        name: "Fanta Lemon",
-        description: "Refreshing lemon soda",
-        price: "$3",
-        rating: "4.4",
-        image:
-          "https://www.kff.co.uk/images_products/HD_059905_FANTA-Lemon-1.jpg",
-      },
-      {
-        name: "Coca-Cola Zero",
-        description: "Zero sugar cola",
-        price: "$3",
-        rating: "4.5",
-        image:
-          "https://www.pngkit.com/png/full/364-3641413_a-selection-of-coca-cola-zero-bottles-and.png",
-      },
-      {
-        name: "Diet Coke",
-        description: "Sugar-free cola",
-        price: "$3",
-        rating: "4.4",
-        image:
-          "https://images.unsplash.com/photo-1505577058444-a3dab4c70455?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "7UP",
-        description: "Lemon-lime soda",
-        price: "$3",
-        rating: "4.4",
-        image:
-          "https://images.unsplash.com/photo-1459191730420-5f9b7f95b68d?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
-  },
-  {
-    id: "desserts",
-    title: "Desserts",
-    subtitle: "A sweet conclusion",
-    items: [
-      {
-        name: "Baklava",
-        description: "Phyllo dough, chopped nuts, honey syrup",
-        price: "$7",
-        rating: "4.8",
-        image:
-          "https://www.modernhoney.com/wp-content/uploads/2023/03/Baklava-8-crop-scaled.jpg",
-      },
-      {
-        name: "Fruit Salad",
-        description: "Mixed seasonal fruits, honey drizzle",
-        price: "$6",
-        rating: "4.6",
-        image:
-          "https://theforkedspoon.com/wp-content/uploads/2019/07/Fruit-Salad-3-700x1050.jpg",
-      },
-      {
-        name: "Chocolate Cake",
-        description: "Cocoa, flour, sugar, butter",
-        price: "$8",
-        rating: "4.7",
-        image:
-          "https://www.cookingclassy.com/wp-content/uploads/2019/10/chocolate-cake-3.jpg",
-      },
-      {
-        name: "Ice Cream",
-        description: "Milk, cream, sugar, vanilla",
-        price: "$5",
-        rating: "4.5",
-        image:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Kolo",
-        description: "Roasted barley, chickpeas, peanuts",
-        price: "$4",
-        rating: "4.4",
-        image:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Ethiopian Honey Cake",
-        description: "Flour, honey, butter, spices",
-        price: "$7",
-        rating: "4.8",
-        image:
-          "https://deliciosareceta.com/wp-content/uploads/2026/02/Beorns-Spiced-Mead-Honey-Cake-image_1.webp",
-      },
-      {
-        name: "Cheesecake",
-        description: "Cream cheese, sugar, graham cracker crust",
-        price: "$8",
-        rating: "4.7",
-        image:
-          "https://www.wholesomeyum.com/wp-content/uploads/2017/03/wholesomeyum-Keto-Cheesecake-Recipe-Low-Carb-Sugar-Free-Cheesecake.jpg",
-      },
-      {
-        name: "Tiramisu",
-        description: "Mascarpone, coffee, cocoa, ladyfingers",
-        price: "$9",
-        rating: "4.9",
-        image:
-          "https://sointofood.com/wp-content/uploads/2025/08/tiramisu-cake-slice-847x1024.webp",
-      },
-      {
-        name: "Crepes with Honey",
-        description: "Crepe batter, honey, butter",
-        price: "$6",
-        rating: "4.6",
-        image:
-          "https://imperialpdx.com/wp-content/uploads/2026/01/honey-lavender-cream-crepes-with-honey-drizzle-featured.jpg",
-      },
-      {
-        name: "Fruit & Cream Parfait",
-        description: "Fresh fruit, whipped cream, granola",
-        price: "$7",
-        rating: "4.7",
-        image:
-          "https://walkingonsunshinerecipes.com/wp-content/uploads/2024/07/first-hero-photo-Fruit-Parfait-Recipe-with-Whipped-Cream-1.jpg.webp",
-      },
-      {
-        name: "Ethiopian Sambusa",
-        description: "Fried pastry, date filling, cinnamon",
-        price: "$6",
-        rating: "4.8",
-        image:
-          "https://ohsosweetrecipes.sfo3.digitaloceanspaces.com/wp-content/uploads/2025/09/12191132/Sweet-Dessert-Samosa2.png",
-      },
-      {
-        name: "Panna Cotta",
-        description: "Cream, sugar, vanilla, gelatin",
-        price: "$8",
-        rating: "4.7",
-        image:
-          "https://www.cookingclassy.com/wp-content/uploads/2021/05/panna-cotta-01.jpg",
-      },
-    ],
-  },
-  {
-    id: "juice",
-    title: "Juice",
-    subtitle: "Freshly pressed daily",
-    items: [
-      {
-        name: "Avocado Juice",
-        description: "Avocado, milk, sugar",
-        price: "$6",
-        rating: "4.8",
-        image:
-          "https://fitfoodiefinds.com/wp-content/uploads/2021/02/avocado-smoothie-7.jpg",
-      },
-      {
-        name: "Mango Juice",
-        description: "Fresh mango, water, sugar",
-        price: "$5",
-        rating: "4.7",
-        image:
-          "https://www.crazyvegankitchen.com/wp-content/uploads/2023/06/mango-juice-recipe.jpg",
-      },
-      {
-        name: "Papaya Juice",
-        description: "Fresh papaya, water, sugar",
-        price: "$5",
-        rating: "4.6",
-        image:
-          "https://cooksavor.com/wp-content/uploads/2025/07/featured_papaya_juice_final_glass-1024x1024.jpg",
-      },
-      {
-        name: "Mixed Fruit Spris",
-        description: "Layered avocado, mango, papaya juice",
-        price: "$7",
-        rating: "4.9",
-        image:
-  "https://ethiopian-food.org/wp-content/uploads/2024/02/Spris-Ethiopian-Layered-Juice-Recipe.jpg",
-      },
-      {
-        name: "Orange Juice",
-        description: "Fresh squeezed oranges",
-        price: "$4",
-        rating: "4.7",
-        image:
-          "https://www.kitchentreaty.com/wp-content/uploads/2025/03/fresh-squeezed-orange-juice-1.jpg",
-      },
-      {
-        name: "Guava Juice",
-        description: "Fresh guava, water, sugar",
-        price: "$5",
-        rating: "4.6",
-        image:
-          "https://pub-2b91fb1422a24c67b7a354f5f807eb0c.r2.dev/2026/01/guava-nectar-recipe-sweet-tangy-flavor-in-every-glass.jpg",
-      },
-      {
-        name: "Pineapple Juice",
-        description: "Fresh pineapple, water, sugar",
-        price: "$5",
-        rating: "4.7",
-        image:
-        "https://3.bp.blogspot.com/-T6UUfH6AxMQ/VVL_2it1NGI/AAAAAAAA2DY/uimHcVCSwOU/s1600/pure%2Bpineapple%2Bjuice.jpg",
-      },
-      {
-        name: "Watermelon Juice",
-        description: "Fresh watermelon, water",
-        price: "$4",
-        rating: "4.6",
-        image:
-          "https://insanelygoodrecipes.com/wp-content/uploads/2022/10/Refreshing-Watermelon-Smoothie-in-a-Glass.jpg",
-      },
-      {
-        name: "Strawberry Juice",
-        description: "Fresh strawberries, water, sugar",
-        price: "$6",
-        rating: "4.8",
-        image:
-          "https://cdn3.foodviva.com/static-content/food-images/juice-recipes/strawberry-juice-recipe/strawberry-juice-recipe.jpg",
-      },
-      {
-        name: "Banana Juice",
-        description: "Banana, milk, sugar",
-        price: "$5",
-        rating: "4.7",
-        image:
-          "https://foodtasia.com/wp-content/uploads/2021/07/banana-milkshake-39c.jpg",
-      },
-      {
-        name: "Lemon Juice",
-        description: "Fresh lemon, water, sugar",
-        price: "$4",
-        rating: "4.6",
-        image:
-          "https://plantbasedfolk.com/wp-content/uploads/2022/08/Lemon-Mint-Juice.jpg",
-      },
-      {
-        name: "Tamarind Juice",
-        description: "Tamarind pulp, water, sugar",
-        price: "$5",
-        rating: "4.7",
-        image:
-          "https://www.foxyfolksy.com/wp-content/uploads/2022/07/tamarind-juice.jpg",
-      },
-    ],
-  },
-  {
-    id: "hot-drinks",
-    title: "Hot Drinks",
-    subtitle: "Heated to perfection",
-    items: [
-      {
-        name: "Ethiopian Buna",
-        description: "Roasted coffee beans, traditional ceremony brew",
-        price: "$4",
-        rating: "4.9",
-        image:
-          "https://www.whatsoutaddis.com/wp-content/uploads/2023/01/EonRvPEXIAUWeZK.jpg",
-      },
-      {
-        name: "Macchiato",
-        description: "Espresso, a touch of steamed milk",
-        price: "$4",
-        rating: "4.7",
-        image:
-          "https://www.handycookbook.com/wp-content/uploads/2023/04/Macchiato-.jpeg",
-      },
-      {
-        name: "Cappuccino",
-        description: "Espresso, steamed milk, milk foam",
-        price: "$4",
-        rating: "4.7",
-        image:
-        "https://images.wallpaperscraft.com/image/single/coffee_cappuccino_cup_136699_3840x2160.jpg",
-      },
-      {
-        name: "Espresso",
-        description: "Concentrated brewed coffee shot",
-        price: "$3",
-        rating: "4.7",
-        image:
-          "https://i5.walmartimages.com/seo/Espresso-Cups-Set-2-4-OZ-Double-Spouts-Cups-Espresso-Shot-Glasses-Milk-Cup-Handle-Clear-Glass-Espresso-Accessories-Espresso-Machine-Small_4f14cb95-44a0-4137-be88-828cd9ca457e.a1d88154d4917f8b339b16dd8730bb02.jpeg",
-      },
-      {
-        name: "Latte",
-        description: "Espresso, steamed milk, light foam",
-        price: "$5",
-        rating: "4.7",
-        image:
-          "https://www.latteartguide.com/wp-content/uploads/2023/05/Curved-cup-latte-art-scaled.jpg",
-      },
-      {
-        name: "Black Tea",
-        description: "Brewed black tea leaves",
-        price: "$3",
-        rating: "4.5",
-        image:
-          "https://imgcdn.stablediffusionweb.com/2024/3/20/801cbf80-ee76-4113-aa7c-6fe0dfa65129.jpg",
-      },
-      {
-        name: "Spiced Tea",
-        description: "Black tea, cinnamon, cloves, cardamom",
-        price: "$3",
-        rating: "4.6",
-        image:
-          "https://thebalemoya.com/cdn/shop/articles/ethiopiantea.png?v=1709920159",
-      },
-      {
-        name: "Hot Chocolate",
-        description: "Cocoa, milk, sugar",
-        price: "$4",
-        rating: "4.8",
-        image:
-          "https://vintagekitchennotes.com/wp-content/uploads/2023/11/Hot-chocolate-with-cream.jpeg",
-      },
-      {
-        name: "Ginger Tea",
-        description: "Fresh ginger, hot water, honey",
-        price: "$3",
-        rating: "4.5",
-        image:
-          "https://image.freepik.com/free-photo/glass-cup-hot-ginger-tea-with-ginger-rhizome-sliced-isolated-white-background_252965-22.jpg",
-      },
-      {
-        name: "Herbal Tea",
-        description: "Koseret herb leaves, hot water",
-        price: "$3",
-        rating: "4.6",
-        image:
-          "https://images.unsplash.com/photo-1510626176961-4b2ec2ec83b5?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Turkish Coffee",
-        description: "Finely ground coffee, cardamom, sugar",
-        price: "$4",
-        rating: "4.8",
-        image:
-          "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Chamomile Tea",
-        description: "Dried chamomile flowers, hot water, honey",
-        price: "$3",
-        rating: "4.7",
-        image:
-          "https://images.unsplash.com/photo-1510626176961-4b2ec2ec83b5?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
-  },
-];
+// Original Section Navigation
+function SectionNav({ activeCategory, setActiveCategory, onScrollNav, t }) {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-function SectionNav({ active, onSelect }) {
+  const sections = [
+    { id: "hero", label: "Home" },
+    { id: "burger", label: "Burgers" },
+    { id: "foods", label: "Foods" },
+    { id: "pizza", label: "Pizza" },
+    { id: "soft-drinks", label: "Soft Drinks" },
+    { id: "juice", label: "Juice" },
+    { id: "desserts", label: "Desserts" },
+    { id: "hot-drinks", label: "Hot Drinks" },
+  ];
+
   return (
     <nav className="site-nav">
       <div className="site-name">
-        <span className="brand">Digital</span>
+        <span className="brand">Biku Fine</span>
         <span className="brand-accent">Menu</span>
       </div>
-      <div className="links">
-        {sections.slice(1).map((section) => (
+      <button
+        type="button"
+        className="nav-toggle"
+        aria-label="Toggle navigation menu"
+        aria-expanded={mobileNavOpen}
+        onClick={() => setMobileNavOpen((open) => !open)}
+      >
+        <span className="nav-toggle-icon">☰</span>
+      </button>
+      <div className={mobileNavOpen ? "links open" : "links"}>
+        {sections.map((section) => (
           <button
             key={section.id}
-            className={active === section.id ? "nav-link active" : "nav-link"}
-            onClick={() => onSelect(section.id)}
+            className={
+              activeCategory === section.id ||
+              (section.id === "hero" && activeCategory === "all")
+                ? "nav-link active"
+                : "nav-link"
+            }
+            onClick={() => {
+              if (section.id === "hero") {
+                setActiveCategory("all");
+                onScrollNav("hero");
+              } else {
+                setActiveCategory(section.id);
+                onScrollNav(section.id);
+              }
+              setMobileNavOpen(false);
+            }}
             type="button"
           >
             {section.label}
           </button>
         ))}
       </div>
-      <button className="search-button" type="button" aria-label="Search menu">
-        <span />
-      </button>
     </nav>
   );
 }
 
-function MenuCard({ item }) {
+// Original Menu Card Design with Favorites overlay and Order triggers
+function MenuCard({
+  item,
+  isFav,
+  onToggleFav,
+  onClick,
+  onOrderClick,
+  t,
+  currency,
+}) {
   return (
-    <article className="menu-card">
+    <article className="menu-card" onClick={() => onClick(item)}>
       <div
         className="card-image"
         style={{ backgroundImage: `url(${item.image})` }}
       >
-        {item.badge && <span className="badge">{item.badge}</span>}
+        {!item.available && (
+          <span
+            className="badge"
+            style={{ background: "#ef4444", color: "white" }}
+          >
+            {t.out_of_stock}
+          </span>
+        )}
+        <button
+          className={`fav-btn ${isFav ? "is-fav" : ""}`}
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: 5,
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFav(item.name);
+          }}
+          type="button"
+          aria-label="Toggle Favorite"
+        >
+          ♥
+        </button>
       </div>
       <div className="card-body">
         <h3>{item.name}</h3>
         <p>{item.description}</p>
         <div className="card-footer">
-          <span className="price">{item.price}</span>
+          <span className="card-price">
+            {formatPrice(item.price, currency)}
+          </span>
+          {item.available ? (
+            <button
+              className="order-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onOrderClick(e, item);
+              }}
+              type="button"
+            >
+              Order
+            </button>
+          ) : (
+            <span className="out-label">{t.out_of_stock}</span>
+          )}
         </div>
       </div>
     </article>
   );
 }
 
-function App() {
-  const [activeSection, setActiveSection] = useState("hero");
+function AppContent() {
+  const {
+    menuItems,
+    orders,
+    favorites,
+    currentUser,
+    placeOrder,
+    cancelOrder,
+    confirmReceipt,
+    toggleFavorite,
+    addFeedback,
+    logout,
+  } = useDatabase();
+
+  // Navigation & Views
+  const [activeTab, setActiveTab] = useState("menu"); // menu, favorites, orders, feedback, settings, auth
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState(() => {
+    return localStorage.getItem("dm_view_mode") || "grid"; // grid (original) or list
+  });
+
+  // Modals & Details
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [checkoutItem, setCheckoutItem] = useState(null);
+  const [orderQuantity, setOrderQuantity] = useState(1);
+  const [specialInstructions, setSpecialInstructions] = useState("");
+  const [tableNumber, setTableNumber] = useState("Table 5");
+
+  // Settings states
+  const [language, setLanguage] = useState(
+    () => localStorage.getItem("dm_lang") || "en",
+  );
+  const [currency, setCurrency] = useState(
+    () => localStorage.getItem("dm_currency") || "USD",
+  );
+  const [darkMode, setDarkMode] = useState(() => {
+    const val = localStorage.getItem("dm_dark_mode");
+    return val ? val === "true" : true;
+  });
+  const [notifications, setNotifications] = useState(true);
+  const [showNotificationBanner, setShowNotificationBanner] = useState(null);
+
+  // Feedback states
+  const [feedbackRating, setFeedbackRating] = useState(5);
+  const [feedbackComment, setFeedbackComment] = useState("");
+  const [feedbackType, setFeedbackType] = useState("Suggestion");
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+
+  // Expanded sections state for original See More layout
   const [expandedSections, setExpandedSections] = useState({});
 
-  const hero = useMemo(
-    () => ({
-      title: "Delicious Food, Unforgettable Moments",
-      description:
-        "A perfect blend of taste, art, and ambiance. Crafted to delight your senses.",
-    }),
-    [],
-  );
+  const t = translations[language] || translations.en;
 
-  const handleNav = (id) => {
+  // Persist settings
+  useEffect(() => {
+    localStorage.setItem("dm_view_mode", viewMode);
+  }, [viewMode]);
+
+  useEffect(() => {
+    localStorage.setItem("dm_lang", language);
+  }, [language]);
+
+  useEffect(() => {
+    localStorage.setItem("dm_currency", currency);
+  }, [currency]);
+
+  useEffect(() => {
+    localStorage.setItem("dm_dark_mode", darkMode);
+    document.body.className = darkMode ? "dark-theme" : "light-theme";
+  }, [darkMode]);
+
+  // Status updates audio + banner
+  const [prevStatuses, setPrevStatuses] = useState({});
+  useEffect(() => {
+    if (orders.length > 0) {
+      orders.forEach((o) => {
+        const prev = prevStatuses[o.id];
+        if (prev && prev !== o.status) {
+          triggerNotification(
+            `Order ${o.id} status updated to: ${t[o.status] || o.status}!`,
+          );
+        }
+      });
+      const statuses = {};
+      orders.forEach((o) => {
+        statuses[o.id] = o.status;
+      });
+      setPrevStatuses(statuses);
+    }
+  }, [orders]);
+
+  const triggerNotification = (message) => {
+    if (notifications) {
+      setShowNotificationBanner(message);
+      try {
+        const audioCtx = new (
+          window.AudioContext || window.webkitAudioContext
+        )();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        oscillator.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioCtx.currentTime + 0.4,
+        );
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.4);
+      } catch (e) {
+        console.log("Audio API issue: ", e);
+      }
+      setTimeout(() => {
+        setShowNotificationBanner(null);
+      }, 4000);
+    }
+  };
+
+  const handleScrollNav = (id) => {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth", block: "start" });
-      setActiveSection(id);
     }
   };
 
@@ -810,168 +273,1224 @@ function App() {
     }));
   };
 
+  const handleCardClick = (item) => {
+    setSelectedItem(item);
+  };
+
+  const handleQuickOrder = (e, item) => {
+    e.stopPropagation();
+    setCheckoutItem(item);
+    setOrderQuantity(1);
+    setSpecialInstructions("");
+  };
+
+  const handleModalOrder = (item) => {
+    setSelectedItem(null);
+    setCheckoutItem(item);
+  };
+
+  const handleConfirmOrder = () => {
+    if (!checkoutItem) return;
+    const orderItems = [
+      {
+        name: checkoutItem.name,
+        price: checkoutItem.price,
+        quantity: orderQuantity,
+        image: checkoutItem.image,
+      },
+    ];
+    placeOrder(orderItems, tableNumber, specialInstructions);
+    setCheckoutItem(null);
+    setActiveTab("orders");
+    triggerNotification("Order placed successfully!");
+  };
+
+  const submitFeedbackForm = (e) => {
+    e.preventDefault();
+    addFeedback(feedbackRating, feedbackComment, feedbackType);
+    setFeedbackSubmitted(true);
+    setFeedbackComment("");
+    setTimeout(() => {
+      setFeedbackSubmitted(false);
+    }, 4000);
+  };
+
+  // Reconstruct Menu Sections dynamically matching original layout categories
+  const sectionsList = [
+    { id: "burger", title: "Burgers", subtitle: "Crafted to perfection" },
+    { id: "foods", title: "Foods", subtitle: "The heart of the table" },
+    { id: "pizza", title: "Pizza", subtitle: "Wood-fired classics" },
+    {
+      id: "soft-drinks",
+      title: "Soft Drinks",
+      subtitle: "Ice-cold refreshment",
+    },
+    { id: "juice", title: "Juice", subtitle: "Freshly pressed daily" },
+    { id: "desserts", title: "Desserts", subtitle: "A sweet conclusion" },
+    { id: "hot-drinks", title: "Hot Drinks", subtitle: "Heated to perfection" },
+  ];
+
+  // Group items by category, respecting active item visibility edits
+  const dynamicMenuSections = sectionsList.map((sec) => ({
+    ...sec,
+    items: menuItems.filter((item) => {
+      // Hidden items are omitted from guest view
+      if (!item.available && !currentUser) return false;
+      return item.category === sec.id;
+    }),
+  }));
+
+  // Render Dashboard
+  if (currentUser) {
+    return (
+      <div className="app-shell-container">
+        {currentUser.role === "admin" && (
+          <AdminDashboard
+            language={language}
+            currency={currency}
+            onLogout={() => logout()}
+          />
+        )}
+        {currentUser.role === "kitchen" && (
+          <KitchenDashboard language={language} onLogout={() => logout()} />
+        )}
+        {currentUser.role === "waiter" && (
+          <WaiterDashboard language={language} onLogout={() => logout()} />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="app-shell">
-      <SectionNav active={activeSection} onSelect={handleNav} />
-      <main>
-        <section id="hero" className="hero-section">
-          <div className="hero-copy">
-            <p className="hero-small">Digital Menu</p>
-            <h1>{hero.title}</h1>
-            <p>{hero.description}</p>
-          </div>
-        </section>
+      {showNotificationBanner && (
+        <div className="notification-banner">
+          <span className="bell-pulse">🔔</span>
+          <span className="banner-msg">{showNotificationBanner}</span>
+        </div>
+      )}
 
-        {menuSections.map((section, index) => {
-          const swapColumns = ["foods", "soft-drinks", "juice"].includes(
-            section.id,
-          );
-          const isExpanded = expandedSections[section.id] || false;
-          const initialItemsCount = 2;
-          const displayItems = isExpanded
-            ? section.items
-            : section.items.slice(0, initialItemsCount);
-          const isOddSection = index % 2 === 0;
+      {/* Render Sticky SectionNav at the top when in Customer Menu Tab */}
+      {activeTab === "menu" && (
+        <SectionNav
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+          onScrollNav={handleScrollNav}
+          t={t}
+        />
+      )}
 
-          return (
-            <section key={section.id} id={section.id} className="menu-section">
-              <div className="section-hero">
-                <span className="course-label">Course {index + 1}.</span>
-                <h2>{section.title}</h2>
-                <p>{section.subtitle}</p>
-              </div>
-              <div className="section-body">
-                {swapColumns ? (
-                  <>
-                    <div className="cards-column">
-                      <div className={`cards-grid small-cards ${isOddSection ? 'two-columns' : ''}`}>
-                        {displayItems.map((item) => (
-                          <MenuCard key={item.name} item={item} />
-                        ))}
-                      </div>
-                      {section.items.length > initialItemsCount && (
-                        <button
-                          className="see-more"
-                          type="button"
-                          onClick={() => toggleExpanded(section.id)}
-                        >
-                          {isExpanded ? "See Less" : "See More"}
-                        </button>
-                      )}
-                    </div>
-                    <div
-                      className="section-feature-image"
-                      style={{
-                        backgroundImage: `url(${section.items[0].image})`,
-                      }}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <div
-                      className="section-feature-image"
-                      style={{
-                        backgroundImage: `url(${section.items[0].image})`,
-                      }}
-                    />
-                    <div className="cards-column">
-                      <div className={`cards-grid small-cards ${isOddSection ? 'two-columns' : ''}`}>
-                        {displayItems.map((item) => (
-                          <MenuCard key={item.name} item={item} />
-                        ))}
-                      </div>
-                      {section.items.length > initialItemsCount && (
-                        <button
-                          className="see-more"
-                          type="button"
-                          onClick={() => toggleExpanded(section.id)}
-                        >
-                          {isExpanded ? "See Less" : "See More"}
-                        </button>
-                      )}
-                    </div>
-                  </>
+      <main className="guest-main">
+        {/* CUSTOMER MENU TAB */}
+        {activeTab === "menu" && (
+          <div className="menu-view-container">
+            {/* Search Header */}
+            <div className="search-filter-section">
+              <div className="search-bar-wrap">
+                <span className="search-icon">🔍</span>
+                <input
+                  type="text"
+                  placeholder={t.search_placeholder}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                  <button
+                    className="clear-search"
+                    onClick={() => setSearchQuery("")}
+                  >
+                    ×
+                  </button>
                 )}
+                {/* Embedded Grid/List layout toggle inside search row */}
+                <div className="view-toggle" style={{ marginLeft: "8px" }}>
+                  <button
+                    className={viewMode === "grid" ? "active" : ""}
+                    onClick={() => setViewMode("grid")}
+                    title={t.grid_view}
+                  >
+                    🎛️
+                  </button>
+                  <button
+                    className={viewMode === "list" ? "active" : ""}
+                    onClick={() => setViewMode("list")}
+                    title={t.list_view}
+                  >
+                    ☰
+                  </button>
+                </div>
               </div>
-            </section>
-          );
-        })}
+            </div>
 
-        <section className="special-offer-section">
-          <div
-            className="offer-banner"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80')",
-            }}
-          >
-            <div className="offer-banner-overlay">
-              <h2>Get 20% Off On Your First Order</h2>
-            </div>
-          </div>
-          <div className="offer-features offer-features-row">
-            <div>
-              <strong>Fresh Ingredients</strong>
-              <span>Farm to table</span>
-            </div>
-            <div>
-              <strong>Expert Chefs</strong>
-              <span>Passionate & experienced</span>
-            </div>
-            <div>
-              <strong>Cozy Ambiance</strong>
-              <span>Perfect for everyone</span>
-            </div>
-          </div>
-        </section>
+            {/* Search results always render as a flat filtered list, honoring the grid/list toggle */}
+            {searchQuery ? (
+              <div className={`dishes-container view-${viewMode}`}>
+                {menuItems
+                  .filter((item) => {
+                    if (!item.available && !currentUser) return false;
+                    const matchesCategory =
+                      activeCategory === "all" ||
+                      item.category === activeCategory;
+                    const matchesSearch =
+                      item.name
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase()) ||
+                      item.description
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase());
+                    return matchesCategory && matchesSearch;
+                  })
+                  .map((item) => {
+                    const isFav = favorites.includes(item.name);
+                    if (viewMode === "list") {
+                      return (
+                        <article
+                          key={item.name}
+                          className="dish-card list-item"
+                          onClick={() => handleCardClick(item)}
+                        >
+                          <div
+                            className="list-img"
+                            style={{ backgroundImage: `url(${item.image})` }}
+                          >
+                            {!item.available && (
+                              <span className="avail-badge out">
+                                {t.out_of_stock}
+                              </span>
+                            )}
+                          </div>
+                          <div className="list-body">
+                            <div className="list-header">
+                              <div>
+                                <h3>{item.name}</h3>
+                                <span className="list-cat-label">
+                                  {item.category}
+                                </span>
+                              </div>
+                              <button
+                                className={`fav-btn ${isFav ? "is-fav" : ""}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleFavorite(item.name);
+                                }}
+                              >
+                                ♥
+                              </button>
+                            </div>
+                            <p className="list-desc">{item.description}</p>
+                            <div className="list-footer">
+                              <span className="dish-price">
+                                {formatPrice(item.price, currency)}
+                              </span>
+                              <div className="list-actions">
+                                <span className="list-prep-time">
+                                  ⏱️ {item.prepTime} {t.mins}
+                                </span>
+                                {item.available ? (
+                                  <button
+                                    className="order-btn"
+                                    onClick={(e) => handleQuickOrder(e, item)}
+                                  >
+                                    {t.order_now}
+                                  </button>
+                                ) : (
+                                  <span className="out-label">
+                                    {t.out_of_stock}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      );
+                    } else {
+                      // Grid flat view for searches
+                      return (
+                        <article
+                          key={item.name}
+                          className="dish-card grid-item"
+                          onClick={() => handleCardClick(item)}
+                        >
+                          <div
+                            className="dish-img-wrap"
+                            style={{ backgroundImage: `url(${item.image})` }}
+                          >
+                            {!item.available && (
+                              <span className="avail-badge out">
+                                {t.out_of_stock}
+                              </span>
+                            )}
+                            <button
+                              className={`fav-btn ${isFav ? "is-fav" : ""}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleFavorite(item.name);
+                              }}
+                            >
+                              ♥
+                            </button>
+                          </div>
+                          <div className="dish-info">
+                            <h3>{item.name}</h3>
+                            <div className="dish-meta">
+                              <span className="dish-price">
+                                {formatPrice(item.price, currency)}
+                              </span>
+                              {item.available ? (
+                                <button
+                                  className="quick-add-btn"
+                                  onClick={(e) => handleQuickOrder(e, item)}
+                                >
+                                  {t.quick_order}
+                                </button>
+                              ) : (
+                                <span className="out-label">
+                                  {t.out_of_stock}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </article>
+                      );
+                    }
+                  })}
+              </div>
+            ) : (
+              // ORIGINAL CUSTOMER VIEW (Alternating layout, Hero, See More, Footer, Offer banner)
+              <div className="original-view-wrapper">
+                <section id="hero" className="hero-section">
+                  <div className="hero-copy">
+                    <p className="hero-small">Biku Fine Restaurant</p>
+                    <h1>Delicious Food, Unforgettable Moments</h1>
+                    <p>
+                      A perfect blend of taste, art, and ambiance. Crafted to
+                      delight your senses with traditional Habesha hospitality.
+                    </p>
+                  </div>
+                </section>
 
-        <footer className="site-footer">
-          <div className="footer-container">
-            <div className="footer-brand">
-              <h3>Digital Menu</h3>
-              <p>
-                A modern dining experience designed around seasonal flavors,
-                thoughtfully composed dishes, and relaxed hospitality.
-              </p>
+                {/* Alternating Sections list */}
+                {dynamicMenuSections
+                  .filter(
+                    (sec) =>
+                      activeCategory === "all" || sec.id === activeCategory,
+                  )
+                  .map((section, index) => {
+                    const swapColumns = [
+                      "foods",
+                      "soft-drinks",
+                      "juice",
+                    ].includes(section.id);
+                    const isExpanded = expandedSections[section.id] || false;
+                    const initialItemsCount = 2;
+                    const displayItems = isExpanded
+                      ? section.items
+                      : section.items.slice(0, initialItemsCount);
+                    const isOddSection = index % 2 === 0;
+
+                    if (section.items.length === 0) return null;
+
+                    if (viewMode === "list") {
+                      return (
+                        <section
+                          key={section.id}
+                          id={section.id}
+                          className="menu-section"
+                        >
+                          <div className="section-hero">
+                            <span className="course-label">
+                              Course {index + 1}.
+                            </span>
+                            <h2>{section.title}</h2>
+                            <p>{section.subtitle}</p>
+                          </div>
+                          <div className="dishes-container view-list section-list-items">
+                            {section.items.map((item) => {
+                              const isFav = favorites.includes(item.name);
+                              return (
+                                <article
+                                  key={item.name}
+                                  className="dish-card list-item"
+                                  onClick={() => handleCardClick(item)}
+                                >
+                                  <div
+                                    className="list-img"
+                                    style={{
+                                      backgroundImage: `url(${item.image})`,
+                                    }}
+                                  >
+                                    {!item.available && (
+                                      <span className="avail-badge out">
+                                        {t.out_of_stock}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="list-body">
+                                    <div className="list-header">
+                                      <div>
+                                        <h3>{item.name}</h3>
+                                        <span className="list-cat-label">
+                                          {item.category}
+                                        </span>
+                                      </div>
+                                      <button
+                                        className={`fav-btn ${isFav ? "is-fav" : ""}`}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          toggleFavorite(item.name);
+                                        }}
+                                      >
+                                        ♥
+                                      </button>
+                                    </div>
+                                    <p className="list-desc">
+                                      {item.description}
+                                    </p>
+                                    <div className="list-footer">
+                                      <span className="dish-price">
+                                        {formatPrice(item.price, currency)}
+                                      </span>
+                                      <div className="list-actions">
+                                        <span className="list-prep-time">
+                                          ⏱️ {item.prepTime} {t.mins}
+                                        </span>
+                                        {item.available ? (
+                                          <button
+                                            className="order-btn"
+                                            onClick={(e) =>
+                                              handleQuickOrder(e, item)
+                                            }
+                                          >
+                                            {t.order_now}
+                                          </button>
+                                        ) : (
+                                          <span className="out-label">
+                                            {t.out_of_stock}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </article>
+                              );
+                            })}
+                          </div>
+                        </section>
+                      );
+                    }
+
+                    return (
+                      <section
+                        key={section.id}
+                        id={section.id}
+                        className="menu-section"
+                      >
+                        <div className="section-hero">
+                          <span className="course-label">
+                            Course {index + 1}.
+                          </span>
+                          <h2>{section.title}</h2>
+                          <p>{section.subtitle}</p>
+                        </div>
+                        <div
+                          className={`section-body ${swapColumns ? "swap" : ""}`}
+                        >
+                          {swapColumns ? (
+                            <>
+                              <div className="cards-column">
+                                <div
+                                  className={`cards-grid small-cards ${isOddSection ? "two-columns" : ""}`}
+                                >
+                                  {displayItems.map((item) => (
+                                    <MenuCard
+                                      key={item.name}
+                                      item={item}
+                                      isFav={favorites.includes(item.name)}
+                                      onToggleFav={toggleFavorite}
+                                      onClick={handleCardClick}
+                                      onOrderClick={handleQuickOrder}
+                                      t={t}
+                                      currency={currency}
+                                    />
+                                  ))}
+                                </div>
+                                {section.items.length > initialItemsCount && (
+                                  <button
+                                    className="see-more"
+                                    type="button"
+                                    onClick={() => toggleExpanded(section.id)}
+                                  >
+                                    {isExpanded ? "See Less" : "See More"}
+                                  </button>
+                                )}
+                              </div>
+                              <div
+                                className="section-feature-image"
+                                style={{
+                                  backgroundImage: `url(${section.items[0].image})`,
+                                }}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <div
+                                className="section-feature-image"
+                                style={{
+                                  backgroundImage: `url(${section.items[0].image})`,
+                                }}
+                              />
+                              <div className="cards-column">
+                                <div
+                                  className={`cards-grid small-cards ${isOddSection ? "two-columns" : ""}`}
+                                >
+                                  {displayItems.map((item) => (
+                                    <MenuCard
+                                      key={item.name}
+                                      item={item}
+                                      isFav={favorites.includes(item.name)}
+                                      onToggleFav={toggleFavorite}
+                                      onClick={handleCardClick}
+                                      onOrderClick={handleQuickOrder}
+                                      t={t}
+                                      currency={currency}
+                                    />
+                                  ))}
+                                </div>
+                                {section.items.length > initialItemsCount && (
+                                  <button
+                                    className="see-more"
+                                    type="button"
+                                    onClick={() => toggleExpanded(section.id)}
+                                  >
+                                    {isExpanded ? "See Less" : "See More"}
+                                  </button>
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </section>
+                    );
+                  })}
+
+                {/* Special Offer section */}
+                <section className="special-offer-section">
+                  <div className="offer-copy">
+                    <span className="offer-label">Special Offer</span>
+                    <h2>Get 20% Off On Your First Order</h2>
+                    <p>
+                      Claim your welcome discount when dining at Biku Fine.
+                      Savor our traditional stews, custom burgers, and
+                      handcrafted pizzas.
+                    </p>
+                  </div>
+                  <div className="offer-features">
+                    <div className="offer-features-row">
+                      <div>
+                        <strong>Fresh Ingredients</strong>
+                        <span>Farm to table selections daily</span>
+                      </div>
+                      <div>
+                        <strong>Expert Chefs</strong>
+                        <span>Passionate cooking staff</span>
+                      </div>
+                      <div>
+                        <strong>Cozy Ambiance</strong>
+                        <span>Perfect dining table space</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Site Footer */}
+                <footer className="site-footer">
+                  <div className="footer-container">
+                    <div className="footer-brand">
+                      <h3>Biku Fine</h3>
+                      <p>
+                        A modern dining experience designed around seasonal
+                        flavors, thoughtfully composed dishes, and relaxed
+                        hospitality.
+                      </p>
+                    </div>
+                    <div className="footer-links">
+                      <div className="footer-column">
+                        <h4>Quick Links</h4>
+                        <nav aria-label="Footer navigation">
+                          <a href="#hero">Home</a>
+                          <a href="#burger">Burgers</a>
+                          <a href="#foods">Foods</a>
+                          <a href="#pizza">Pizza</a>
+                        </nav>
+                      </div>
+                      <div className="footer-column">
+                        <h4>More</h4>
+                        <nav aria-label="Footer navigation">
+                          <a href="#soft-drinks">Drinks</a>
+                          <a href="#juice">Juice</a>
+                          <a href="#desserts">Desserts</a>
+                          <a href="#hot-drinks">Coffee</a>
+                        </nav>
+                      </div>
+                      <div className="footer-column">
+                        <h4>Contact</h4>
+                        <p>hello@bikufine.com</p>
+                        <p>+251 911 123 456</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="footer-bottom">
+                    <p>© 2026 Biku Fine Digital Menu. All rights reserved.</p>
+                  </div>
+                </footer>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* FAVORITES PAGE */}
+        {activeTab === "favorites" && (
+          <div className="favorites-view">
+            <h2>{t.fav_title}</h2>
+            {favorites.length === 0 ? (
+              <div className="empty-state">
+                <span className="heart-empty">🖤</span>
+                <p>{t.no_fav}</p>
+              </div>
+            ) : (
+              <div className="dishes-container view-grid">
+                {menuItems
+                  .filter(
+                    (item) => favorites.includes(item.name) && item.available,
+                  )
+                  .map((item) => (
+                    <article
+                      key={item.name}
+                      className="dish-card grid-item"
+                      onClick={() => handleCardClick(item)}
+                    >
+                      <div
+                        className="dish-img-wrap"
+                        style={{ backgroundImage: `url(${item.image})` }}
+                      >
+                        <button
+                          className="fav-btn is-fav"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(item.name);
+                          }}
+                        >
+                          ♥
+                        </button>
+                      </div>
+                      <div className="dish-info">
+                        <h3>{item.name}</h3>
+                        <div className="dish-meta">
+                          <span className="dish-price">
+                            {formatPrice(item.price, currency)}
+                          </span>
+                          <button
+                            className="quick-add-btn"
+                            onClick={(e) => handleQuickOrder(e, item)}
+                          >
+                            {t.quick_order}
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ORDERS PAGE */}
+        {activeTab === "orders" && (
+          <div className="orders-view">
+            <h2>{t.orders}</h2>
+            {orders.length === 0 ? (
+              <div className="empty-state">
+                <span className="basket-empty">🛒</span>
+                <p>{t.no_orders}</p>
+              </div>
+            ) : (
+              <div className="orders-container">
+                <div className="orders-section">
+                  <h3>🔄 {t.current_orders}</h3>
+                  {orders.filter(
+                    (o) => !["Completed", "Cancelled"].includes(o.status),
+                  ).length === 0 ? (
+                    <p className="no-orders-sub">No active orders right now.</p>
+                  ) : (
+                    orders
+                      .filter(
+                        (o) => !["Completed", "Cancelled"].includes(o.status),
+                      )
+                      .map((order) => (
+                        <div key={order.id} className="customer-order-card">
+                          <div className="order-header-row">
+                            <span className="order-id">{order.id}</span>
+                            <span
+                              className={`status-badge-lg status-${order.status}`}
+                            >
+                              {t[order.status] || order.status}
+                            </span>
+                          </div>
+                          <div className="order-details-body">
+                            <div className="order-time-row">
+                              <span>
+                                {t.table_num}: {order.table}
+                              </span>
+                              <span>
+                                {new Date(
+                                  order.timestamps.created,
+                                ).toLocaleTimeString()}
+                              </span>
+                            </div>
+                            <ul className="order-items-summary">
+                              {order.items.map((it) => (
+                                <li key={it.name}>
+                                  {it.name} (x{it.quantity}) -{" "}
+                                  {formatPrice(
+                                    it.price * it.quantity,
+                                    currency,
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                            <div className="status-timeline">
+                              <div
+                                className={`timeline-step ${["Pending", "Accepted", "Preparing", "Ready", "Served"].includes(order.status) ? "done" : ""}`}
+                              >
+                                <div className="step-dot" />
+                                <span className="step-label">{t.Pending}</span>
+                              </div>
+                              <div
+                                className={`timeline-step ${["Accepted", "Preparing", "Ready", "Served"].includes(order.status) ? "done" : ""}`}
+                              >
+                                <div className="step-dot" />
+                                <span className="step-label">{t.Accepted}</span>
+                              </div>
+                              <div
+                                className={`timeline-step ${["Preparing", "Ready", "Served"].includes(order.status) ? "done" : ""}`}
+                              >
+                                <div className="step-dot" />
+                                <span className="step-label">
+                                  {t.Preparing}
+                                </span>
+                              </div>
+                              <div
+                                className={`timeline-step ${["Ready", "Served"].includes(order.status) ? "done" : ""}`}
+                              >
+                                <div className="step-dot" />
+                                <span className="step-label">{t.Ready}</span>
+                              </div>
+                              <div
+                                className={`timeline-step ${["Served"].includes(order.status) ? "done" : ""}`}
+                              >
+                                <div className="step-dot" />
+                                <span className="step-label">{t.Served}</span>
+                              </div>
+                            </div>
+                            <div className="order-card-actions">
+                              {order.status === "Pending" && (
+                                <button
+                                  className="cancel-order-btn"
+                                  onClick={() => cancelOrder(order.id)}
+                                >
+                                  {t.cancel_order}
+                                </button>
+                              )}
+                              {order.status === "Served" && (
+                                <button
+                                  className="confirm-order-btn"
+                                  onClick={() => confirmReceipt(order.id)}
+                                >
+                                  {t.confirm_received}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
+                <div className="orders-section past-orders">
+                  <h3>📜 {t.past_orders}</h3>
+                  {orders.filter((o) =>
+                    ["Completed", "Cancelled"].includes(o.status),
+                  ).length === 0 ? (
+                    <p className="no-orders-sub">
+                      No previous orders recorded.
+                    </p>
+                  ) : (
+                    orders
+                      .filter((o) =>
+                        ["Completed", "Cancelled"].includes(o.status),
+                      )
+                      .map((order) => (
+                        <div
+                          key={order.id}
+                          className="customer-order-card past"
+                        >
+                          <div className="order-header-row">
+                            <span className="order-id">{order.id}</span>
+                            <span
+                              className={`status-badge-lg status-${order.status}`}
+                            >
+                              {t[order.status] || order.status}
+                            </span>
+                          </div>
+                          <div className="order-details-body">
+                            <div className="order-time-row">
+                              <span>
+                                {t.table_num}: {order.table}
+                              </span>
+                              <span>
+                                {new Date(
+                                  order.timestamps.created,
+                                ).toLocaleDateString()}{" "}
+                                {new Date(
+                                  order.timestamps.created,
+                                ).toLocaleTimeString()}
+                              </span>
+                            </div>
+                            <ul className="order-items-summary">
+                              {order.items.map((it) => (
+                                <li key={it.name}>
+                                  {it.name} (x{it.quantity}) -{" "}
+                                  {formatPrice(
+                                    it.price * it.quantity,
+                                    currency,
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                            <div className="order-completion-status">
+                              {order.status === "Completed" ? (
+                                <p className="green">✓ {t.receipt_confirmed}</p>
+                              ) : (
+                                <p className="red">✗ {t.order_cancelled}</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* FEEDBACK PAGE */}
+        {activeTab === "feedback" && (
+          <div className="feedback-view-container">
+            <h2>{t.feedback}</h2>
+            <div className="feedback-card">
+              <h3>{t.rate_us}</h3>
+              {feedbackSubmitted ? (
+                <div className="feedback-success-msg">
+                  <span>🎉</span>
+                  <p>{t.feedback_success}</p>
+                </div>
+              ) : (
+                <form onSubmit={submitFeedbackForm}>
+                  <div className="rating-selector">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        className={
+                          feedbackRating >= star ? "star filled" : "star"
+                        }
+                        onClick={() => setFeedbackRating(star)}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
+                  <div className="form-group">
+                    <label>Feedback Type</label>
+                    <div className="type-options">
+                      {["Suggestion", "Issue Report", "Compliment"].map(
+                        (type) => (
+                          <button
+                            key={type}
+                            type="button"
+                            className={
+                              feedbackType === type
+                                ? "type-tab active"
+                                : "type-tab"
+                            }
+                            onClick={() => setFeedbackType(type)}
+                          >
+                            {type === "Suggestion" && t.type_suggestion}
+                            {type === "Issue Report" && t.type_issue}
+                            {type === "Compliment" && t.type_compliment}
+                          </button>
+                        ),
+                      )}
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Comment</label>
+                    <textarea
+                      placeholder={t.feedback_placeholder}
+                      value={feedbackComment}
+                      onChange={(e) => setFeedbackComment(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="feedback-submit-btn">
+                    {t.submit_feedback}
+                  </button>
+                </form>
+              )}
             </div>
-            <div className="footer-links">
-              <div className="footer-column">
-                <h4>Quick Links</h4>
-                <nav aria-label="Footer navigation">
-                  <a href="#hero">Home</a>
-                  <a href="#burger">Burger</a>
-                  <a href="#foods">Foods</a>
-                  <a href="#pizza">Pizza</a>
-                </nav>
+          </div>
+        )}
+
+        {/* SETTINGS PAGE */}
+        {activeTab === "settings" && (
+          <div className="settings-view-container">
+            <h2>{t.settings}</h2>
+            <div className="settings-card">
+              <div className="setting-row">
+                <div className="setting-info">
+                  <h3>{t.language}</h3>
+                  <p>Choose your preferred language</p>
+                </div>
+                <div className="setting-control">
+                  <select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                  >
+                    <option value="en">English</option>
+                    <option value="am">አማርኛ (Amharic)</option>
+                    <option value="om">Afaan Oromo</option>
+                  </select>
+                </div>
               </div>
-              <div className="footer-column">
-                <h4>More</h4>
-                <nav aria-label="Footer navigation">
-                  <a href="#soft-drinks">Soft Drinks</a>
-                  <a href="#juice">Juice</a>
-                  <a href="#desserts">Desserts</a>
-                  <a href="#hot-drinks">Hot Drinks</a>
-                </nav>
+              <div className="setting-row">
+                <div className="setting-info">
+                  <h3>{t.currency}</h3>
+                  <p>Prices convert automatically</p>
+                </div>
+                <div className="setting-control">
+                  <div className="currency-selector">
+                    <button
+                      className={currency === "USD" ? "active" : ""}
+                      onClick={() => setCurrency("USD")}
+                    >
+                      USD ($)
+                    </button>
+                    <button
+                      className={currency === "ETB" ? "active" : ""}
+                      onClick={() => setCurrency("ETB")}
+                    >
+                      ETB (Br)
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="footer-column">
-                <h4>Contact</h4>
-                <p>hello@bikufine.com</p>
-                <p>+251 911 123 456</p>
-                <p>Open daily 11am–10pm</p>
+              <div className="setting-row">
+                <div className="setting-info">
+                  <h3>{t.dark_mode}</h3>
+                  <p>Toggle display theme</p>
+                </div>
+                <div className="setting-control">
+                  <button
+                    className="toggle-theme-btn"
+                    onClick={() => setDarkMode(!darkMode)}
+                  >
+                    {darkMode ? `🌙 ${t.dark_mode}` : `☀️ ${t.light_mode}`}
+                  </button>
+                </div>
+              </div>
+              <div className="setting-row">
+                <div className="setting-info">
+                  <h3>{t.notifications}</h3>
+                  <p>Receive live updates on your order</p>
+                </div>
+                <div className="setting-control">
+                  <button
+                    className={`toggle-switch-btn ${notifications ? "on" : "off"}`}
+                    onClick={() => setNotifications(!notifications)}
+                  >
+                    {notifications ? "Enabled" : "Disabled"}
+                  </button>
+                </div>
+              </div>
+              <div className="about-section-settings">
+                <h3>📜 {t.about_us}</h3>
+                <p>{t.about_desc}</p>
+                <div className="settings-contact">
+                  <h4>📞 {t.contact_info}</h4>
+                  <p>Email: hello@bikufine.com</p>
+                  <p>Phone: +251 911 123 456</p>
+                </div>
+              </div>
+              <div className="staff-panel-settings">
+                <button
+                  className="staff-access-btn"
+                  onClick={() => setActiveTab("auth")}
+                >
+                  🔑 Staff Portal Login
+                </button>
               </div>
             </div>
           </div>
-          <div className="footer-bottom">
-            <p>© 2026 Digital Menu. All rights reserved.</p>
-            <div className="footer-social">
-              <a href="#" aria-label="Facebook">Facebook</a>
-              <a href="#" aria-label="Instagram">Instagram</a>
-              <a href="#" aria-label="Twitter">Twitter</a>
-            </div>
-          </div>
-        </footer>
+        )}
+
+        {/* AUTH LOGIN PAGE */}
+        {activeTab === "auth" && (
+          <AuthPage
+            language={language}
+            onBackToGuest={() => setActiveTab("menu")}
+          />
+        )}
       </main>
+
+      {/* BOTTOM NAVIGATION */}
+      <nav className="bottom-nav">
+        <button
+          className={activeTab === "menu" ? "nav-item active" : "nav-item"}
+          onClick={() => {
+            setActiveTab("menu");
+            setSelectedItem(null);
+          }}
+        >
+          <span className="nav-icon">🍔</span>
+          <span className="nav-label">{t.home}</span>
+        </button>
+        <button
+          className={activeTab === "favorites" ? "nav-item active" : "nav-item"}
+          onClick={() => {
+            setActiveTab("favorites");
+            setSelectedItem(null);
+          }}
+        >
+          <span className="nav-icon">♥</span>
+          <span className="nav-label">{t.favorites}</span>
+        </button>
+        <button
+          className={activeTab === "orders" ? "nav-item active" : "nav-item"}
+          onClick={() => {
+            setActiveTab("orders");
+            setSelectedItem(null);
+          }}
+        >
+          <span className="nav-icon">📋</span>
+          <span className="nav-label">{t.orders}</span>
+        </button>
+        <button
+          className={activeTab === "feedback" ? "nav-item active" : "nav-item"}
+          onClick={() => {
+            setActiveTab("feedback");
+            setSelectedItem(null);
+          }}
+        >
+          <span className="nav-icon">💬</span>
+          <span className="nav-label">{t.feedback}</span>
+        </button>
+        <button
+          className={activeTab === "settings" ? "nav-item active" : "nav-item"}
+          onClick={() => {
+            setActiveTab("settings");
+            setSelectedItem(null);
+          }}
+        >
+          <span className="nav-icon">⚙️</span>
+          <span className="nav-label">{t.settings}</span>
+        </button>
+      </nav>
+
+      {/* ITEM DETAILS MODAL */}
+      {selectedItem && (
+        <div className="modal-overlay" onClick={() => setSelectedItem(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close"
+              onClick={() => setSelectedItem(null)}
+            >
+              ×
+            </button>
+            <div
+              className="modal-image"
+              style={{ backgroundImage: `url(${selectedItem.image})` }}
+            />
+            <div className="modal-details">
+              <div className="modal-header-row">
+                <h2>{selectedItem.name}</h2>
+                <span className="modal-category">{selectedItem.category}</span>
+              </div>
+              <p className="modal-description">{selectedItem.description}</p>
+              <div className="modal-metadata-grid">
+                <div>
+                  <strong>⏱️ {t.estimated_time}:</strong>
+                  <span>
+                    {selectedItem.prepTime || 15} {t.mins}
+                  </span>
+                </div>
+                <div>
+                  <strong>Availability:</strong>
+                  <span className={selectedItem.available ? "green" : "red"}>
+                    {selectedItem.available ? t.available : t.out_of_stock}
+                  </span>
+                </div>
+              </div>
+              {selectedItem.ingredients &&
+                selectedItem.ingredients.length > 0 && (
+                  <div className="modal-ingredients-section">
+                    <h4>🥒 {t.ingredients}</h4>
+                    <div className="ingredients-pills">
+                      {selectedItem.ingredients.map((ing) => (
+                        <span key={ing} className="ing-pill">
+                          {ing}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              {selectedItem.allergens && selectedItem.allergens.length > 0 && (
+                <div className="modal-allergens-section">
+                  <h4>⚠️ {t.allergens}</h4>
+                  <div className="allergens-pills">
+                    {selectedItem.allergens.map((all) => (
+                      <span key={all} className="all-pill">
+                        {all}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="modal-footer-row">
+                <span className="modal-price">
+                  {formatPrice(selectedItem.price, currency)}
+                </span>
+                <div className="modal-actions-wrap">
+                  <button
+                    className={`fav-toggle-modal-btn ${favorites.includes(selectedItem.name) ? "favorited" : ""}`}
+                    onClick={() => toggleFavorite(selectedItem.name)}
+                  >
+                    {favorites.includes(selectedItem.name)
+                      ? `♥ ${t.remove_fav}`
+                      : `♡ ${t.add_to_fav}`}
+                  </button>
+                  {selectedItem.available ? (
+                    <button
+                      className="modal-order-btn"
+                      onClick={() => handleModalOrder(selectedItem)}
+                    >
+                      {t.order_now}
+                    </button>
+                  ) : (
+                    <span className="out-badge-modal">{t.out_of_stock}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* QUICK ORDER MODAL */}
+      {checkoutItem && (
+        <div className="modal-overlay" onClick={() => setCheckoutItem(null)}>
+          <div
+            className="modal-content checkout-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              onClick={() => setCheckoutItem(null)}
+            >
+              ×
+            </button>
+            <h3>🛒 {t.order_conf}</h3>
+            <div className="checkout-summary-card">
+              <div className="checkout-item-row">
+                <div
+                  className="checkout-item-img"
+                  style={{ backgroundImage: `url(${checkoutItem.image})` }}
+                />
+                <div className="checkout-item-details">
+                  <h4>{checkoutItem.name}</h4>
+                  <p>{formatPrice(checkoutItem.price, currency)}</p>
+                </div>
+              </div>
+              <div className="checkout-form-row quantity-selector-row">
+                <label>{t.quantity}</label>
+                <div className="qty-picker">
+                  <button
+                    onClick={() =>
+                      setOrderQuantity((prev) => Math.max(1, prev - 1))
+                    }
+                  >
+                    −
+                  </button>
+                  <span>{orderQuantity}</span>
+                  <button onClick={() => setOrderQuantity((prev) => prev + 1)}>
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="checkout-form-row">
+                <label>{t.table_num}</label>
+                <select
+                  value={tableNumber}
+                  onChange={(e) => setTableNumber(e.target.value)}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                    <option key={n} value={`Table ${n}`}>
+                      Table {n}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="checkout-form-row">
+                <label>Kitchen Notes (Optional)</label>
+                <input
+                  type="text"
+                  placeholder={t.special_notes}
+                  value={specialInstructions}
+                  onChange={(e) => setSpecialInstructions(e.target.value)}
+                />
+              </div>
+              <div className="checkout-total-row">
+                <span>Total:</span>
+                <strong>
+                  {formatPrice(checkoutItem.price * orderQuantity, currency)}
+                </strong>
+              </div>
+              <div className="checkout-actions">
+                <button
+                  className="checkout-cancel-btn"
+                  onClick={() => setCheckoutItem(null)}
+                >
+                  {t.cancel}
+                </button>
+                <button
+                  className="checkout-submit-btn"
+                  onClick={handleConfirmOrder}
+                >
+                  🚀 {t.place_order_btn}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <DatabaseProvider>
+      <AppContent />
+    </DatabaseProvider>
   );
 }
 
