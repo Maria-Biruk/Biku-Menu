@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useDatabase } from "../db";
 import { translations } from "../i18n";
+import { groupItemsByCategory } from "../menuCategories";
+import { groupOrdersByTable } from "../orderUtils";
 
 export default function KitchenDashboard({ language, onLogout }) {
   const {
@@ -11,6 +13,11 @@ export default function KitchenDashboard({ language, onLogout }) {
     kitchenMarkReady,
     toggleItemAvailability
   } = useDatabase();
+
+  const groupedMenuItems = useMemo(
+    () => groupItemsByCategory(menuItems),
+    [menuItems],
+  );
 
   const [activeSubTab, setActiveSubTab] = useState("queue"); // queue, availability
 
@@ -25,6 +32,13 @@ export default function KitchenDashboard({ language, onLogout }) {
   const completedOrders = orders
     .filter(o => o.status === "Ready" || o.status === "Served" || o.status === "Completed")
     .slice(0, 10); // Show recent 10 completed orders
+
+  const activeOrdersByTable = groupOrdersByTable(activeOrders);
+  const completedOrdersByTable = groupOrdersByTable(completedOrders);
+
+  // Preserve each order's overall priority rank (oldest first) even though
+  // tickets are now visually grouped by table.
+  const priorityRankById = new Map(activeOrders.map((o, i) => [o.id, i + 1]));
 
   const getActionButton = (order) => {
     switch (order.status) {
@@ -88,58 +102,71 @@ export default function KitchenDashboard({ language, onLogout }) {
                 <p>🎉 All clear! No pending orders.</p>
               </div>
             ) : (
-              <div className="kitchen-tickets-grid">
-                {activeOrders.map((order, idx) => (
-                  <div key={order.id} className={`kitchen-ticket status-${order.status}`}>
-                    <div className="ticket-header">
-                      <div>
-                        <span className="ticket-id">{order.id}</span>
-                        <span className="ticket-table">{order.table}</span>
-                      </div>
-                      <span className="ticket-index">#{idx + 1}</span>
-                    </div>
-
-                    <div className="ticket-body">
-                      <div className="ticket-time">
-                        Received: {new Date(order.timestamps.created).toLocaleTimeString()} ({getElapsedTime(order.timestamps.created)})
-                      </div>
-                      <ul className="ticket-items">
-                        {order.items.map(it => (
-                          <li key={it.name}>
-                            <span className="item-qty">{it.quantity}x</span>
-                            <span className="item-name">{it.name}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      {order.notes && (
-                        <div className="ticket-notes">
-                          <strong>Note:</strong> "{order.notes}"
+              activeOrdersByTable.map(group => (
+                <div key={group.table} className="kitchen-table-group">
+                  <h3 className="kitchen-table-heading">
+                    {group.table}
+                    <span className="category-count">{group.orders.length}</span>
+                  </h3>
+                  <div className="kitchen-tickets-grid">
+                    {group.orders.map(order => (
+                      <div key={order.id} className={`kitchen-ticket status-${order.status}`}>
+                        <div className="ticket-header">
+                          <span className="ticket-id">{order.id}</span>
+                          <span className="ticket-index">#{priorityRankById.get(order.id)}</span>
                         </div>
-                      )}
-                    </div>
 
-                    <div className="ticket-footer">
-                      <span className={`status-badge-ticket state-${order.status}`}>
-                        {t[order.status] || order.status}
-                      </span>
-                      {getActionButton(order)}
-                    </div>
+                        <div className="ticket-body">
+                          <div className="ticket-time">
+                            Received: {new Date(order.timestamps.created).toLocaleTimeString()} ({getElapsedTime(order.timestamps.created)})
+                          </div>
+                          <ul className="ticket-items">
+                            {order.items.map(it => (
+                              <li key={it.name}>
+                                <span className="item-qty">{it.quantity}x</span>
+                                <span className="item-name">{it.name}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          {order.notes && (
+                            <div className="ticket-notes">
+                              <strong>Note:</strong> "{order.notes}"
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="ticket-footer">
+                          <span className={`status-badge-ticket state-${order.status}`}>
+                            {t[order.status] || order.status}
+                          </span>
+                          {getActionButton(order)}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))
             )}
 
             {/* Completed section */}
             {completedOrders.length > 0 && (
               <div className="kitchen-completed-section">
                 <h3>Recently Completed</h3>
-                <div className="completed-tickets-row">
-                  {completedOrders.map(order => (
-                    <div key={order.id} className="completed-ticket-pill">
-                      <strong>{order.id}</strong> ({order.table}) - {order.status}
+                {completedOrdersByTable.map(group => (
+                  <div key={group.table} className="kitchen-table-group">
+                    <h4 className="kitchen-table-heading">
+                      {group.table}
+                      <span className="category-count">{group.orders.length}</span>
+                    </h4>
+                    <div className="completed-tickets-row">
+                      {group.orders.map(order => (
+                        <div key={order.id} className="completed-ticket-pill">
+                          <strong>{order.id}</strong> - {order.status}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
@@ -148,25 +175,33 @@ export default function KitchenDashboard({ language, onLogout }) {
           <div className="kitchen-availability-view">
             <h2>{t.item_avail_title}</h2>
             <p className="subtitle">Hide items that are out of ingredients. They will be removed from customer view immediately.</p>
-            <div className="availability-grid">
-              {menuItems.map(item => (
-                <div key={item.name} className={`avail-card ${item.available ? "in-stock" : "out-of-stock"}`}>
-                  <div className="avail-img" style={{ backgroundImage: `url(${item.image})` }} />
-                  <div className="avail-details">
-                    <h4>{item.name}</h4>
-                    <span className="avail-cat">{item.category}</span>
-                  </div>
-                  <div className="avail-action">
-                    <button 
-                      className={`avail-toggle-btn ${item.available ? "btn-hide" : "btn-show"}`}
-                      onClick={() => toggleItemAvailability(item.name, !item.available)}
-                    >
-                      {item.available ? `🚫 ${t.hide_item}` : `🟢 ${t.show_item}`}
-                    </button>
-                  </div>
+            {groupedMenuItems.map((group) => (
+              <div key={group.id} className="menu-category-group">
+                <h3 className="menu-category-heading">
+                  {group.label}
+                  <span className="category-count">{group.items.length}</span>
+                </h3>
+                <div className="availability-grid">
+                  {group.items.map(item => (
+                    <div key={item.name} className={`avail-card ${item.available ? "in-stock" : "out-of-stock"}`}>
+                      <div className="avail-img" style={{ backgroundImage: `url(${item.image})` }} />
+                      <div className="avail-details">
+                        <h4>{item.name}</h4>
+                        <span className="avail-cat">{item.category}</span>
+                      </div>
+                      <div className="avail-action">
+                        <button 
+                          className={`avail-toggle-btn ${item.available ? "btn-hide" : "btn-show"}`}
+                          onClick={() => toggleItemAvailability(item.name, !item.available)}
+                        >
+                          {item.available ? `🚫 ${t.hide_item}` : `🟢 ${t.show_item}`}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         )}
       </main>

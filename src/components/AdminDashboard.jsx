@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useDatabase } from "../db";
 import { translations, formatPrice } from "../i18n";
+import { MENU_CATEGORIES, groupItemsByCategory } from "../menuCategories";
 
 export default function AdminDashboard({ language, currency, onLogout }) {
   const {
@@ -84,6 +85,13 @@ export default function AdminDashboard({ language, currency, onLogout }) {
       salesData: sortedSales.slice(0, 5) // Top 5 items for chart
     };
   }, [orders]);
+
+  // Group menu items by category so the Menu Management table reads
+  // like the customer-facing menu instead of one long, mixed list.
+  const groupedMenuItems = useMemo(
+    () => groupItemsByCategory(menuItems),
+    [menuItems],
+  );
 
   // Open item form for adding or editing
   const handleOpenItemModal = (item = null) => {
@@ -284,45 +292,57 @@ export default function AdminDashboard({ language, currency, onLogout }) {
                 ＋ {t.add_new_item}
               </button>
             </div>
-            <div className="admin-table-wrap">
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price (USD)</th>
-                    <th>Price ({currency})</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {menuItems.map(item => (
-                    <tr key={item.name}>
-                      <td>
-                        <div className="table-img" style={{ backgroundImage: `url(${item.image})` }} />
-                      </td>
-                      <td className="bold">{item.name}</td>
-                      <td><span className="cat-badge">{item.category}</span></td>
-                      <td>${item.price}</td>
-                      <td>{formatPrice(item.price, currency)}</td>
-                      <td>
-                        <span className={`status-badge ${item.available ? "green" : "red"}`}>
-                          {item.available ? t.available : t.out_of_stock}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="action-btns">
-                          <button className="edit-action" onClick={() => handleOpenItemModal(item)}>✏️</button>
-                          <button className="delete-action" onClick={() => deleteMenuItem(item.name)}>🗑️</button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {menuItems.length === 0 ? (
+              <div className="admin-table-wrap">
+                <p className="empty-state">No menu items yet.</p>
+              </div>
+            ) : (
+              groupedMenuItems.map((group) => (
+                <div key={group.id} className="menu-category-group">
+                  <h3 className="menu-category-heading">
+                    {group.label}
+                    <span className="category-count">{group.items.length}</span>
+                  </h3>
+                  <div className="admin-table-wrap">
+                    <table className="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Image</th>
+                          <th>Name</th>
+                          <th>Price (USD)</th>
+                          <th>Price ({currency})</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {group.items.map(item => (
+                          <tr key={item.name}>
+                            <td>
+                              <div className="table-img" style={{ backgroundImage: `url(${item.image})` }} />
+                            </td>
+                            <td className="bold">{item.name}</td>
+                            <td>${item.price}</td>
+                            <td>{formatPrice(item.price, currency)}</td>
+                            <td>
+                              <span className={`status-badge ${item.available ? "green" : "red"}`}>
+                                {item.available ? t.available : t.out_of_stock}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="action-btns">
+                                <button className="edit-action" onClick={() => handleOpenItemModal(item)}>✏️</button>
+                                <button className="delete-action" onClick={() => deleteMenuItem(item.name)}>🗑️</button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
 
@@ -502,13 +522,9 @@ export default function AdminDashboard({ language, currency, onLogout }) {
                     value={itemForm.category}
                     onChange={(e) => setItemForm({ ...itemForm, category: e.target.value })}
                   >
-                    <option value="burger">Burgers</option>
-                    <option value="foods">Foods</option>
-                    <option value="pizza">Pizza</option>
-                    <option value="soft-drinks">Soft Drinks</option>
-                    <option value="juice">Juice</option>
-                    <option value="desserts">Desserts</option>
-                    <option value="hot-drinks">Hot Drinks</option>
+                    {MENU_CATEGORIES.map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.label}</option>
+                    ))}
                   </select>
                 </div>
               </div>

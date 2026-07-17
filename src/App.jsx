@@ -8,6 +8,67 @@ import AdminDashboard from "./components/AdminDashboard";
 import KitchenDashboard from "./components/KitchenDashboard";
 import WaiterDashboard from "./components/WaiterDashboard";
 
+// Minimal line-style icons for the bottom navigation (replaces cartoonish emoji)
+function NavSvgIcon({ children }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {children}
+    </svg>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <NavSvgIcon>
+      <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" />
+    </NavSvgIcon>
+  );
+}
+
+function HeartIcon() {
+  return (
+    <NavSvgIcon>
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </NavSvgIcon>
+  );
+}
+
+function OrdersIcon() {
+  return (
+    <NavSvgIcon>
+      <rect x="4" y="4" width="16" height="17" rx="2" />
+      <path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1" />
+      <line x1="8" y1="10" x2="16" y2="10" />
+      <line x1="8" y1="14" x2="16" y2="14" />
+      <line x1="8" y1="18" x2="13" y2="18" />
+    </NavSvgIcon>
+  );
+}
+
+function FeedbackIcon() {
+  return (
+    <NavSvgIcon>
+      <path d="M21 11.5a8.4 8.4 0 0 1-1.8 5.2L20 21l-4.3-1.2a8.4 8.4 0 0 1-3.7.9 8.5 8.5 0 1 1 9-9.2z" />
+    </NavSvgIcon>
+  );
+}
+
+function SettingsIcon() {
+  return (
+    <NavSvgIcon>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </NavSvgIcon>
+  );
+}
+
 // Original Section Navigation
 function SectionNav({ activeCategory, setActiveCategory, onScrollNav, t }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -26,9 +87,10 @@ function SectionNav({ activeCategory, setActiveCategory, onScrollNav, t }) {
   return (
     <nav className="site-nav">
       <div className="site-name">
-        <span className="brand">Biku Fine</span>
+        <span className="brand">Digital</span>
         <span className="brand-accent">Menu</span>
       </div>
+
       <button
         type="button"
         className="nav-toggle"
@@ -38,6 +100,7 @@ function SectionNav({ activeCategory, setActiveCategory, onScrollNav, t }) {
       >
         <span className="nav-toggle-icon">☰</span>
       </button>
+
       <div className={mobileNavOpen ? "links open" : "links"}>
         {sections.map((section) => (
           <button
@@ -152,11 +215,25 @@ function AppContent() {
   } = useDatabase();
 
   // Navigation & Views
-  const [activeTab, setActiveTab] = useState("menu"); // menu, favorites, orders, feedback, settings, auth
+  // The staff/admin login is intentionally not linked anywhere in the UI.
+  // Staff reach it only by visiting the /portal URL directly.
+  const [activeTab, setActiveTab] = useState(() =>
+    typeof window !== "undefined" &&
+    window.location.pathname.replace(/\/+$/, "") === "/portal"
+      ? "auth"
+      : "menu",
+  ); // menu, favorites, orders, feedback, settings, auth
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState(() => {
-    return localStorage.getItem("dm_view_mode") || "grid"; // grid (original) or list
+    const stored = localStorage.getItem("dm_view_mode");
+    if (stored) return stored;
+    // Default to the list layout on mobile-sized screens, since the
+    // grid/list toggle is hidden there and list reads best on small widths.
+    if (typeof window !== "undefined" && window.innerWidth <= 850) {
+      return "list";
+    }
+    return "grid"; // grid (original) or list
   });
 
   // Modals & Details
@@ -208,6 +285,18 @@ function AppContent() {
     localStorage.setItem("dm_dark_mode", darkMode);
     document.body.className = darkMode ? "dark-theme" : "light-theme";
   }, [darkMode]);
+
+  // Keep the address bar in sync with the (unlinked) staff portal route.
+  // Visiting /portal directly opens the staff login; leaving it restores "/".
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const path = window.location.pathname.replace(/\/+$/, "");
+    if (activeTab === "auth" && path !== "/portal") {
+      window.history.pushState({}, "", "/portal");
+    } else if (activeTab !== "auth" && path === "/portal") {
+      window.history.pushState({}, "", "/");
+    }
+  }, [activeTab]);
 
   // Status updates audio + banner
   const [prevStatuses, setPrevStatuses] = useState({});
@@ -1231,14 +1320,6 @@ function AppContent() {
                   <p>Phone: +251 911 123 456</p>
                 </div>
               </div>
-              <div className="staff-panel-settings">
-                <button
-                  className="staff-access-btn"
-                  onClick={() => setActiveTab("auth")}
-                >
-                  🔑 Staff Portal Login
-                </button>
-              </div>
             </div>
           </div>
         )}
@@ -1261,7 +1342,9 @@ function AppContent() {
             setSelectedItem(null);
           }}
         >
-          <span className="nav-icon">🍔</span>
+          <span className="nav-icon">
+            <HomeIcon />
+          </span>
           <span className="nav-label">{t.home}</span>
         </button>
         <button
@@ -1271,7 +1354,9 @@ function AppContent() {
             setSelectedItem(null);
           }}
         >
-          <span className="nav-icon">♥</span>
+          <span className="nav-icon">
+            <HeartIcon />
+          </span>
           <span className="nav-label">{t.favorites}</span>
         </button>
         <button
@@ -1281,7 +1366,9 @@ function AppContent() {
             setSelectedItem(null);
           }}
         >
-          <span className="nav-icon">📋</span>
+          <span className="nav-icon">
+            <OrdersIcon />
+          </span>
           <span className="nav-label">{t.orders}</span>
         </button>
         <button
@@ -1291,7 +1378,9 @@ function AppContent() {
             setSelectedItem(null);
           }}
         >
-          <span className="nav-icon">💬</span>
+          <span className="nav-icon">
+            <FeedbackIcon />
+          </span>
           <span className="nav-label">{t.feedback}</span>
         </button>
         <button
@@ -1301,7 +1390,9 @@ function AppContent() {
             setSelectedItem(null);
           }}
         >
-          <span className="nav-icon">⚙️</span>
+          <span className="nav-icon">
+            <SettingsIcon />
+          </span>
           <span className="nav-label">{t.settings}</span>
         </button>
       </nav>
