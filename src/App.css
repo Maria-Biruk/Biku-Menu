@@ -34,15 +34,18 @@ body:not(.light-theme) {
 
 /* Light Mode */
 body.light-theme {
-  --bg-main: #faf9f6;
+  --bg-main: #ffffff;
   --bg-card: #ffffff;
-  --bg-nav: rgba(250, 249, 246, 0.85);
-  --bg-input: #f2f0ea;
+  --bg-nav: rgba(255, 255, 255, 0.9);
+  --bg-input: #f4f3f0;
   --text-main: #181615;
-  --text-muted: rgba(24, 22, 21, 0.7);
+  --text-muted: rgba(24, 22, 21, 0.68);
   --text-dark: #070606;
-  --border-color: rgba(24, 22, 21, 0.08);
-  --border-active: rgba(196, 169, 110, 0.5);
+  --border-color: rgba(24, 22, 21, 0.1);
+  --border-active: rgba(196, 169, 110, 0.55);
+  --shadow-sm: 0 2px 10px rgba(24, 22, 21, 0.06);
+  --shadow-md: 0 10px 30px rgba(24, 22, 21, 0.08);
+  --shadow-lg: 0 18px 44px rgba(24, 22, 21, 0.12);
 }
 
 /* Base Body Styles */
@@ -454,6 +457,60 @@ button:active {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+/* Favorite (heart) toggle buttons - used as image overlays and inline
+   next to item titles, so keep them compact and consistent everywhere. */
+.fav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  color: #fff;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.fav-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fav-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: scale(1.08);
+}
+
+.fav-btn.is-fav {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.fav-btn.is-fav:hover {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+/* Inline usage (e.g. list-header, next to the item name) sits on the
+   card body rather than a photo, so use a subtler background there. */
+.list-header .fav-btn {
+  background: var(--bg-input);
+  color: var(--text-muted);
+}
+
+.list-header .fav-btn:hover {
+  background: var(--bg-input);
+  color: var(--text-main);
+}
+
+.list-header .fav-btn.is-fav {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
 }
 
 /* Original Special Offer Banner */
@@ -1065,6 +1122,9 @@ button:active {
 }
 
 .fav-toggle-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: var(--bg-input);
   border: 1px solid var(--border-color);
   color: var(--text-main);
@@ -1072,6 +1132,11 @@ button:active {
   border-radius: var(--border-radius-sm);
   font-size: 13px;
   font-weight: 500;
+}
+
+.fav-toggle-modal-btn svg {
+  width: 16px;
+  height: 16px;
 }
 
 .fav-toggle-modal-btn.favorited {

@@ -134,6 +134,80 @@ export const translations = {
     enable: "Enable",
     disabled_label: "Disabled",
     revenue_chart: "Revenue & Orders Trend",
+
+    // Category labels (used in nav, section headers, badges, footer)
+    cat_burger: "Burgers",
+    cat_foods: "Foods",
+    cat_pizza: "Pizza",
+    cat_soft_drinks: "Soft Drinks",
+    cat_juice: "Juice",
+    cat_desserts: "Desserts",
+    cat_hot_drinks: "Hot Drinks",
+
+    // Hero section
+    hero_tagline: "Biku Fine Restaurant",
+    hero_title: "Delicious Food, Unforgettable Moments",
+    hero_subtitle: "A perfect blend of taste, art, and ambiance. Crafted to delight your senses with traditional Habesha hospitality.",
+
+    // Section headers
+    sub_burger: "Crafted to perfection",
+    sub_foods: "The heart of the table",
+    sub_pizza: "Wood-fired classics",
+    sub_soft_drinks: "Ice-cold refreshment",
+    sub_juice: "Freshly pressed daily",
+    sub_desserts: "A sweet conclusion",
+    sub_hot_drinks: "Heated to perfection",
+    course_label: "Course",
+    see_more: "See More",
+    see_less: "See Less",
+    order_label: "Order",
+
+    // Special offer section
+    offer_label: "Special Offer",
+    offer_title: "Get 20% Off On Your First Order",
+    offer_desc: "Claim your welcome discount when dining at Biku Fine. Savor our traditional stews, custom burgers, and handcrafted pizzas.",
+    offer_feat1_title: "Fresh Ingredients",
+    offer_feat1_desc: "Farm to table selections daily",
+    offer_feat2_title: "Expert Chefs",
+    offer_feat2_desc: "Passionate cooking staff",
+    offer_feat3_title: "Cozy Ambiance",
+    offer_feat3_desc: "Perfect dining table space",
+
+    // Footer
+    footer_desc: "A modern dining experience designed around seasonal flavors, thoughtfully composed dishes, and relaxed hospitality.",
+    footer_quick_links: "Quick Links",
+    footer_more: "More",
+    footer_drinks: "Drinks",
+    footer_coffee: "Coffee",
+    footer_contact: "Contact",
+    footer_copyright: "© 2026 Biku Fine Digital Menu. All rights reserved.",
+
+    // Empty states
+    no_active_orders: "No active orders right now.",
+    no_past_orders: "No previous orders recorded.",
+
+    // Feedback form
+    feedback_type_label: "Feedback Type",
+    comment_label: "Comment",
+
+    // Settings descriptions
+    lang_desc: "Choose your preferred language",
+    currency_desc: "Prices convert automatically",
+    dark_mode_desc: "Toggle display theme",
+    notifications_desc: "Receive live updates on your order",
+    enabled_label: "Enabled",
+    email_label: "Email",
+    phone_label: "Phone",
+
+    // Item / checkout modal
+    availability_label: "Availability",
+    kitchen_notes_optional: "Kitchen Notes (Optional)",
+    total_label: "Total",
+    table_word: "Table",
+
+    // Notifications
+    order_placed_success: "Order placed successfully!",
+    order_status_update: "Order {id} status updated to: {status}!",
   },
   am: {
     // Nav
@@ -270,6 +344,80 @@ export const translations = {
     enable: "ፍቀድ",
     disabled_label: "የታገደ",
     revenue_chart: "የገቢና ትዕዛዞች ሂደት",
+
+    // Category labels (used in nav, section headers, badges, footer)
+    cat_burger: "በርገር",
+    cat_foods: "ምግቦች",
+    cat_pizza: "ፒዛ",
+    cat_soft_drinks: "ለስላሳ መጠጦች",
+    cat_juice: "ጭማቂ",
+    cat_desserts: "ጣፋጭ ምግቦች",
+    cat_hot_drinks: "ትኩስ መጠጦች",
+
+    // Hero section
+    hero_tagline: "ቢኩ ፋይን ምግብ ቤት",
+    hero_title: "ጣፋጭ ምግብ፣ የማይረሱ ጊዜያት",
+    hero_subtitle: "የጣዕም፣ የስነ ጥበብ እና የከባቢ ምሉእነት ውጤት። በባህላዊ የሀበሻ አቀባበል ስሜትዎን የሚያስደስት።",
+
+    // Section headers
+    sub_burger: "በሙሉ ጥንቃቄ የተሰራ",
+    sub_foods: "የገበታው ማዕከል",
+    sub_pizza: "በእንጨት ምድጃ የተጋገሩ ጥንታዊ ምግቦች",
+    sub_soft_drinks: "የበረዶ ቅዝቃዜ ያለው መጠጥ",
+    sub_juice: "በየቀኑ ትኩስ የሚጨመቅ",
+    sub_desserts: "ጣፋጭ መደምደሚያ",
+    sub_hot_drinks: "በትክክል የተሞቀ",
+    course_label: "ኮርስ",
+    see_more: "ተጨማሪ ይታይ",
+    see_less: "አነስ ያድርጉ",
+    order_label: "እዘዝ",
+
+    // Special offer section
+    offer_label: "ልዩ ቅናሽ",
+    offer_title: "በመጀመሪያ ትዕዛዝዎ 20% ቅናሽ ያግኙ",
+    offer_desc: "በቢኩ ፋይን ሲመገቡ የመግቢያ ቅናሽዎን ይጠቀሙ። ባህላዊ ወጦቻችንን፣ የተለያዩ በርገሮችን እና በእጅ የተሰሩ ፒዛዎችን ይቅመሱ።",
+    offer_feat1_title: "ትኩስ ግብዓቶች",
+    offer_feat1_desc: "በየቀኑ ከእርሻ ወደ ገበታ የሚቀርብ ምርጫ",
+    offer_feat2_title: "ብቁ ሼፎች",
+    offer_feat2_desc: "ስራቸውን በፍቅር የሚሰሩ ሰራተኞች",
+    offer_feat3_title: "አስደሳች ከባቢ",
+    offer_feat3_desc: "ተስማሚ የመመገቢያ ቦታ",
+
+    // Footer
+    footer_desc: "በወቅታዊ ጣዕሞች፣ በጥንቃቄ በተዘጋጁ ምግቦች እና በዘና ያለ አቀባበል ላይ የተመሰረተ ዘመናዊ የመመገቢያ ልምድ።",
+    footer_quick_links: "ፈጣን ማገናኛዎች",
+    footer_more: "ተጨማሪ",
+    footer_drinks: "መጠጦች",
+    footer_coffee: "ቡና",
+    footer_contact: "ያግኙን",
+    footer_copyright: "© 2026 ቢኩ ፋይን ዲጂታል ሜኑ። መብቱ በህግ የተጠበቀ ነው።",
+
+    // Empty states
+    no_active_orders: "በአሁኑ ጊዜ ንቁ ትዕዛዝ የለም።",
+    no_past_orders: "ምንም ያለፈ ትዕዛዝ አልተመዘገበም።",
+
+    // Feedback form
+    feedback_type_label: "የአስተያየት አይነት",
+    comment_label: "አስተያየት",
+
+    // Settings descriptions
+    lang_desc: "የሚፈልጉትን ቋንቋ ይምረጡ",
+    currency_desc: "ዋጋዎች በራስ-ሰር ይቀየራሉ",
+    dark_mode_desc: "የማሳያ ገጽታ ይቀያይሩ",
+    notifications_desc: "ስለ ትዕዛዝዎ ቀጥታ ማሳወቂያ ይቀበሉ",
+    enabled_label: "ነቅቷል",
+    email_label: "ኢሜይል",
+    phone_label: "ስልክ",
+
+    // Item / checkout modal
+    availability_label: "አገልግሎት ማግኘት",
+    kitchen_notes_optional: "የወጥ ቤት ማስታወሻ (አማራጭ)",
+    total_label: "ጠቅላላ",
+    table_word: "ጠረጴዛ",
+
+    // Notifications
+    order_placed_success: "ትዕዛዝዎ በተሳካ ሁኔታ ተልኳል!",
+    order_status_update: "የትዕዛዝ {id} ሁኔታ ወደ: {status} ተቀይሯል!",
   },
   om: {
     // Nav
@@ -406,6 +554,80 @@ export const translations = {
     enable: "Hayyami",
     disabled_label: "Dhorkameera",
     revenue_chart: "Haala Galii fi Ajajawwan",
+
+    // Category labels (used in nav, section headers, badges, footer)
+    cat_burger: "Bargeerii",
+    cat_foods: "Nyaataalee",
+    cat_pizza: "Piizaa",
+    cat_soft_drinks: "Dhugaatii Qabbanaawaa",
+    cat_juice: "Cuunfaa",
+    cat_desserts: "Nyaata Mi'aawaa",
+    cat_hot_drinks: "Dhugaatii Ho'aa",
+
+    // Hero section
+    hero_tagline: "Mana Nyaataa Biku Fine",
+    hero_title: "Nyaata Mi'aawaa, Yeroo Hin Dagatamne",
+    hero_subtitle: "Walmakaa mi'aa, ogummaa fi haala mijataa. Keessummeessummaa aadaa Habashaa ta'een miira keessan gammachiisuuf qophaaye.",
+
+    // Section headers
+    sub_burger: "Guutummaatti qophaaye",
+    sub_foods: "Onnee Maaddii",
+    sub_pizza: "Nyaata durii kan ibidda mukaan waaddamu",
+    sub_soft_drinks: "Dhugaatii qabbanaawaa",
+    sub_juice: "Guyyuma guyyaan haaraa dhidhimfamu",
+    sub_desserts: "Xumura mi'aawaa",
+    sub_hot_drinks: "Sirriitti ho'ifame",
+    course_label: "Sadarkaa",
+    see_more: "Dabalata Ilaali",
+    see_less: "Xiqqeessi",
+    order_label: "Ajaji",
+
+    // Special offer section
+    offer_label: "Kennaa Addaa",
+    offer_title: "Ajaja Jalqabaa Keessaniin 20% Hir'ina Argadhaa",
+    offer_desc: "Yeroo Biku Fine keessatti nyaattan hir'ina simannaa keessan fudhadhaa. Wixinee keenya aadaa, bargeerii addaa, fi piizaa harkaan qophaaye dhandhamaa.",
+    offer_feat1_title: "Mi'oota Haaraa",
+    offer_feat1_desc: "Guyyuma guyyaan qonnaa gara maaddiitti dhiyaata",
+    offer_feat2_title: "Ogeeyyii Nyaata Qopheessan",
+    offer_feat2_desc: "Hojjettoota jaalalaan hojjetan",
+    offer_feat3_title: "Haala Mijataa",
+    offer_feat3_desc: "Bakka nyaataa mijataa",
+
+    // Footer
+    footer_desc: "Muuxannoo nyaataa ammayyaa kan mi'aawuu yeroo, nyaata of eeggannoon qophaaye, fi keessummeessa tasgabbaa'aa irratti hunda'e.",
+    footer_quick_links: "Liinkiiwwan Ariifachiisaa",
+    footer_more: "Dabalata",
+    footer_drinks: "Dhugaatii",
+    footer_coffee: "Bunna",
+    footer_contact: "Nu Quunnamaa",
+    footer_copyright: "© 2026 Biku Fine Menu Dijitaalaa. Mirgi Hunda Seeraan Kan Eegame.",
+
+    // Empty states
+    no_active_orders: "Yeroo ammaa ajaja hojiirra jiru hin jiru.",
+    no_past_orders: "Ajajni darbe kan galmaa'e hin jiru.",
+
+    // Feedback form
+    feedback_type_label: "Gosa Yaadaa",
+    comment_label: "Yaada",
+
+    // Settings descriptions
+    lang_desc: "Afaan barbaaddan filadhaa",
+    currency_desc: "Gatiin ofumaan jijjiirama",
+    dark_mode_desc: "Bifa agarsiisaa jijjiiri",
+    notifications_desc: "Ajaja keessan irratti odeeffannoo yeroo dhihoo argadhaa",
+    enabled_label: "Banameera",
+    email_label: "Imeelii",
+    phone_label: "Bilbila",
+
+    // Item / checkout modal
+    availability_label: "Argamuu",
+    kitchen_notes_optional: "Yaada Kushinaa (Filannoo)",
+    total_label: "Waliigala",
+    table_word: "Teessuma",
+
+    // Notifications
+    order_placed_success: "Ajajni keessan milkaa'inaan ergameera!",
+    order_status_update: "Haalli Ajaja {id} gara: {status} jijjiirameera!",
   }
 };
 
@@ -416,4 +638,22 @@ export const formatPrice = (usdPrice, currencyPreference) => {
     return `${Math.round(usdPrice * EXCHANGE_RATE)} ETB`;
   }
   return `$${usdPrice}`;
+};
+
+// Translates a menu category id (e.g. "soft-drinks") into the current
+// language's display label, falling back to the raw id if missing.
+export const getCategoryLabel = (categoryId, t) => {
+  if (!categoryId) return categoryId;
+  const key = `cat_${categoryId.replace(/-/g, "_")}`;
+  return (t && t[key]) || categoryId;
+};
+
+// Fills {placeholders} in a translation string, e.g.
+// formatTranslation(t.order_status_update, { id: "ORD-1", status: "Ready" })
+export const formatTranslation = (template, values) => {
+  if (!template) return template;
+  return Object.keys(values || {}).reduce(
+    (result, key) => result.replaceAll(`{${key}}`, values[key]),
+    template,
+  );
 };

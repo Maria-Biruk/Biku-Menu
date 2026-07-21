@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./App.css";
 import { DatabaseProvider, useDatabase } from "./db";
-import { translations, formatPrice } from "./i18n";
+import { translations, formatPrice, getCategoryLabel, formatTranslation } from "./i18n";
 
 import AuthPage from "./components/AuthPage";
 import AdminDashboard from "./components/AdminDashboard";
@@ -32,11 +32,18 @@ function HomeIcon() {
   );
 }
 
-function HeartIcon() {
+function HeartIcon({ filled = false }) {
   return (
-    <NavSvgIcon>
+    <svg
+      viewBox="0 0 24 24"
+      fill={filled ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-    </NavSvgIcon>
+    </svg>
   );
 }
 
@@ -74,14 +81,14 @@ function SectionNav({ activeCategory, setActiveCategory, onScrollNav, t }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const sections = [
-    { id: "hero", label: "Home" },
-    { id: "burger", label: "Burgers" },
-    { id: "foods", label: "Foods" },
-    { id: "pizza", label: "Pizza" },
-    { id: "soft-drinks", label: "Soft Drinks" },
-    { id: "juice", label: "Juice" },
-    { id: "desserts", label: "Desserts" },
-    { id: "hot-drinks", label: "Hot Drinks" },
+    { id: "hero", label: t.home },
+    { id: "burger", label: getCategoryLabel("burger", t) },
+    { id: "foods", label: getCategoryLabel("foods", t) },
+    { id: "pizza", label: getCategoryLabel("pizza", t) },
+    { id: "soft-drinks", label: getCategoryLabel("soft-drinks", t) },
+    { id: "juice", label: getCategoryLabel("juice", t) },
+    { id: "desserts", label: getCategoryLabel("desserts", t) },
+    { id: "hot-drinks", label: getCategoryLabel("hot-drinks", t) },
   ];
 
   return (
@@ -170,7 +177,7 @@ function MenuCard({
           type="button"
           aria-label="Toggle Favorite"
         >
-          ♥
+          <HeartIcon filled={isFav} />
         </button>
       </div>
       <div className="card-body">
@@ -189,7 +196,7 @@ function MenuCard({
               }}
               type="button"
             >
-              Order
+              {t.order_label}
             </button>
           ) : (
             <span className="out-label">{t.out_of_stock}</span>
@@ -306,7 +313,10 @@ function AppContent() {
         const prev = prevStatuses[o.id];
         if (prev && prev !== o.status) {
           triggerNotification(
-            `Order ${o.id} status updated to: ${t[o.status] || o.status}!`,
+            formatTranslation(t.order_status_update, {
+              id: o.id,
+              status: t[o.status] || o.status,
+            }),
           );
         }
       });
@@ -391,7 +401,7 @@ function AppContent() {
     placeOrder(orderItems, tableNumber, specialInstructions);
     setCheckoutItem(null);
     setActiveTab("orders");
-    triggerNotification("Order placed successfully!");
+    triggerNotification(t.order_placed_success);
   };
 
   const submitFeedbackForm = (e) => {
@@ -406,17 +416,17 @@ function AppContent() {
 
   // Reconstruct Menu Sections dynamically matching original layout categories
   const sectionsList = [
-    { id: "burger", title: "Burgers", subtitle: "Crafted to perfection" },
-    { id: "foods", title: "Foods", subtitle: "The heart of the table" },
-    { id: "pizza", title: "Pizza", subtitle: "Wood-fired classics" },
+    { id: "burger", title: getCategoryLabel("burger", t), subtitle: t.sub_burger },
+    { id: "foods", title: getCategoryLabel("foods", t), subtitle: t.sub_foods },
+    { id: "pizza", title: getCategoryLabel("pizza", t), subtitle: t.sub_pizza },
     {
       id: "soft-drinks",
-      title: "Soft Drinks",
-      subtitle: "Ice-cold refreshment",
+      title: getCategoryLabel("soft-drinks", t),
+      subtitle: t.sub_soft_drinks,
     },
-    { id: "juice", title: "Juice", subtitle: "Freshly pressed daily" },
-    { id: "desserts", title: "Desserts", subtitle: "A sweet conclusion" },
-    { id: "hot-drinks", title: "Hot Drinks", subtitle: "Heated to perfection" },
+    { id: "juice", title: getCategoryLabel("juice", t), subtitle: t.sub_juice },
+    { id: "desserts", title: getCategoryLabel("desserts", t), subtitle: t.sub_desserts },
+    { id: "hot-drinks", title: getCategoryLabel("hot-drinks", t), subtitle: t.sub_hot_drinks },
   ];
 
   // Group items by category, respecting active item visibility edits
@@ -553,7 +563,7 @@ function AppContent() {
                               <div>
                                 <h3>{item.name}</h3>
                                 <span className="list-cat-label">
-                                  {item.category}
+                                  {getCategoryLabel(item.category, t)}
                                 </span>
                               </div>
                               <button
@@ -563,7 +573,7 @@ function AppContent() {
                                   toggleFavorite(item.name);
                                 }}
                               >
-                                ♥
+                                <HeartIcon filled={isFav} />
                               </button>
                             </div>
                             <p className="list-desc">{item.description}</p>
@@ -616,7 +626,7 @@ function AppContent() {
                                 toggleFavorite(item.name);
                               }}
                             >
-                              ♥
+                              <HeartIcon filled={isFav} />
                             </button>
                           </div>
                           <div className="dish-info">
@@ -649,12 +659,9 @@ function AppContent() {
               <div className="original-view-wrapper">
                 <section id="hero" className="hero-section">
                   <div className="hero-copy">
-                    <p className="hero-small">Biku Fine Restaurant</p>
-                    <h1>Delicious Food, Unforgettable Moments</h1>
-                    <p>
-                      A perfect blend of taste, art, and ambiance. Crafted to
-                      delight your senses with traditional Habesha hospitality.
-                    </p>
+                    <p className="hero-small">{t.hero_tagline}</p>
+                    <h1>{t.hero_title}</h1>
+                    <p>{t.hero_subtitle}</p>
                   </div>
                 </section>
 
@@ -688,7 +695,7 @@ function AppContent() {
                         >
                           <div className="section-hero">
                             <span className="course-label">
-                              Course {index + 1}.
+                              {t.course_label} {index + 1}.
                             </span>
                             <h2>{section.title}</h2>
                             <p>{section.subtitle}</p>
@@ -719,7 +726,7 @@ function AppContent() {
                                       <div>
                                         <h3>{item.name}</h3>
                                         <span className="list-cat-label">
-                                          {item.category}
+                                          {getCategoryLabel(item.category, t)}
                                         </span>
                                       </div>
                                       <button
@@ -729,7 +736,7 @@ function AppContent() {
                                           toggleFavorite(item.name);
                                         }}
                                       >
-                                        ♥
+                                        <HeartIcon filled={isFav} />
                                       </button>
                                     </div>
                                     <p className="list-desc">
@@ -776,7 +783,7 @@ function AppContent() {
                       >
                         <div className="section-hero">
                           <span className="course-label">
-                            Course {index + 1}.
+                            {t.course_label} {index + 1}.
                           </span>
                           <h2>{section.title}</h2>
                           <p>{section.subtitle}</p>
@@ -809,7 +816,7 @@ function AppContent() {
                                     type="button"
                                     onClick={() => toggleExpanded(section.id)}
                                   >
-                                    {isExpanded ? "See Less" : "See More"}
+                                    {isExpanded ? t.see_less : t.see_more}
                                   </button>
                                 )}
                               </div>
@@ -851,7 +858,7 @@ function AppContent() {
                                     type="button"
                                     onClick={() => toggleExpanded(section.id)}
                                   >
-                                    {isExpanded ? "See Less" : "See More"}
+                                    {isExpanded ? t.see_less : t.see_more}
                                   </button>
                                 )}
                               </div>
@@ -865,27 +872,23 @@ function AppContent() {
                 {/* Special Offer section */}
                 <section className="special-offer-section">
                   <div className="offer-copy">
-                    <span className="offer-label">Special Offer</span>
-                    <h2>Get 20% Off On Your First Order</h2>
-                    <p>
-                      Claim your welcome discount when dining at Biku Fine.
-                      Savor our traditional stews, custom burgers, and
-                      handcrafted pizzas.
-                    </p>
+                    <span className="offer-label">{t.offer_label}</span>
+                    <h2>{t.offer_title}</h2>
+                    <p>{t.offer_desc}</p>
                   </div>
                   <div className="offer-features">
                     <div className="offer-features-row">
                       <div>
-                        <strong>Fresh Ingredients</strong>
-                        <span>Farm to table selections daily</span>
+                        <strong>{t.offer_feat1_title}</strong>
+                        <span>{t.offer_feat1_desc}</span>
                       </div>
                       <div>
-                        <strong>Expert Chefs</strong>
-                        <span>Passionate cooking staff</span>
+                        <strong>{t.offer_feat2_title}</strong>
+                        <span>{t.offer_feat2_desc}</span>
                       </div>
                       <div>
-                        <strong>Cozy Ambiance</strong>
-                        <span>Perfect dining table space</span>
+                        <strong>{t.offer_feat3_title}</strong>
+                        <span>{t.offer_feat3_desc}</span>
                       </div>
                     </div>
                   </div>
@@ -896,40 +899,36 @@ function AppContent() {
                   <div className="footer-container">
                     <div className="footer-brand">
                       <h3>Biku Fine</h3>
-                      <p>
-                        A modern dining experience designed around seasonal
-                        flavors, thoughtfully composed dishes, and relaxed
-                        hospitality.
-                      </p>
+                      <p>{t.footer_desc}</p>
                     </div>
                     <div className="footer-links">
                       <div className="footer-column">
-                        <h4>Quick Links</h4>
+                        <h4>{t.footer_quick_links}</h4>
                         <nav aria-label="Footer navigation">
-                          <a href="#hero">Home</a>
-                          <a href="#burger">Burgers</a>
-                          <a href="#foods">Foods</a>
-                          <a href="#pizza">Pizza</a>
+                          <a href="#hero">{t.home}</a>
+                          <a href="#burger">{getCategoryLabel("burger", t)}</a>
+                          <a href="#foods">{getCategoryLabel("foods", t)}</a>
+                          <a href="#pizza">{getCategoryLabel("pizza", t)}</a>
                         </nav>
                       </div>
                       <div className="footer-column">
-                        <h4>More</h4>
+                        <h4>{t.footer_more}</h4>
                         <nav aria-label="Footer navigation">
-                          <a href="#soft-drinks">Drinks</a>
-                          <a href="#juice">Juice</a>
-                          <a href="#desserts">Desserts</a>
-                          <a href="#hot-drinks">Coffee</a>
+                          <a href="#soft-drinks">{t.footer_drinks}</a>
+                          <a href="#juice">{getCategoryLabel("juice", t)}</a>
+                          <a href="#desserts">{getCategoryLabel("desserts", t)}</a>
+                          <a href="#hot-drinks">{t.footer_coffee}</a>
                         </nav>
                       </div>
                       <div className="footer-column">
-                        <h4>Contact</h4>
+                        <h4>{t.footer_contact}</h4>
                         <p>hello@bikufine.com</p>
                         <p>+251 911 123 456</p>
                       </div>
                     </div>
                   </div>
                   <div className="footer-bottom">
-                    <p>© 2026 Biku Fine Digital Menu. All rights reserved.</p>
+                    <p>{t.footer_copyright}</p>
                   </div>
                 </footer>
               </div>
@@ -969,7 +968,7 @@ function AppContent() {
                             toggleFavorite(item.name);
                           }}
                         >
-                          ♥
+                          <HeartIcon filled />
                         </button>
                       </div>
                       <div className="dish-info">
@@ -1009,7 +1008,7 @@ function AppContent() {
                   {orders.filter(
                     (o) => !["Completed", "Cancelled"].includes(o.status),
                   ).length === 0 ? (
-                    <p className="no-orders-sub">No active orders right now.</p>
+                    <p className="no-orders-sub">{t.no_active_orders}</p>
                   ) : (
                     orders
                       .filter(
@@ -1109,9 +1108,7 @@ function AppContent() {
                   {orders.filter((o) =>
                     ["Completed", "Cancelled"].includes(o.status),
                   ).length === 0 ? (
-                    <p className="no-orders-sub">
-                      No previous orders recorded.
-                    </p>
+                    <p className="no-orders-sub">{t.no_past_orders}</p>
                   ) : (
                     orders
                       .filter((o) =>
@@ -1200,7 +1197,7 @@ function AppContent() {
                     ))}
                   </div>
                   <div className="form-group">
-                    <label>Feedback Type</label>
+                    <label>{t.feedback_type_label}</label>
                     <div className="type-options">
                       {["Suggestion", "Issue Report", "Compliment"].map(
                         (type) => (
@@ -1223,7 +1220,7 @@ function AppContent() {
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Comment</label>
+                    <label>{t.comment_label}</label>
                     <textarea
                       placeholder={t.feedback_placeholder}
                       value={feedbackComment}
@@ -1248,7 +1245,7 @@ function AppContent() {
               <div className="setting-row">
                 <div className="setting-info">
                   <h3>{t.language}</h3>
-                  <p>Choose your preferred language</p>
+                  <p>{t.lang_desc}</p>
                 </div>
                 <div className="setting-control">
                   <select
@@ -1264,7 +1261,7 @@ function AppContent() {
               <div className="setting-row">
                 <div className="setting-info">
                   <h3>{t.currency}</h3>
-                  <p>Prices convert automatically</p>
+                  <p>{t.currency_desc}</p>
                 </div>
                 <div className="setting-control">
                   <div className="currency-selector">
@@ -1286,7 +1283,7 @@ function AppContent() {
               <div className="setting-row">
                 <div className="setting-info">
                   <h3>{t.dark_mode}</h3>
-                  <p>Toggle display theme</p>
+                  <p>{t.dark_mode_desc}</p>
                 </div>
                 <div className="setting-control">
                   <button
@@ -1300,14 +1297,14 @@ function AppContent() {
               <div className="setting-row">
                 <div className="setting-info">
                   <h3>{t.notifications}</h3>
-                  <p>Receive live updates on your order</p>
+                  <p>{t.notifications_desc}</p>
                 </div>
                 <div className="setting-control">
                   <button
                     className={`toggle-switch-btn ${notifications ? "on" : "off"}`}
                     onClick={() => setNotifications(!notifications)}
                   >
-                    {notifications ? "Enabled" : "Disabled"}
+                    {notifications ? t.enabled_label : t.disabled_label}
                   </button>
                 </div>
               </div>
@@ -1316,8 +1313,8 @@ function AppContent() {
                 <p>{t.about_desc}</p>
                 <div className="settings-contact">
                   <h4>📞 {t.contact_info}</h4>
-                  <p>Email: hello@bikufine.com</p>
-                  <p>Phone: +251 911 123 456</p>
+                  <p>{t.email_label}: hello@bikufine.com</p>
+                  <p>{t.phone_label}: +251 911 123 456</p>
                 </div>
               </div>
             </div>
@@ -1414,7 +1411,7 @@ function AppContent() {
             <div className="modal-details">
               <div className="modal-header-row">
                 <h2>{selectedItem.name}</h2>
-                <span className="modal-category">{selectedItem.category}</span>
+                <span className="modal-category">{getCategoryLabel(selectedItem.category, t)}</span>
               </div>
               <p className="modal-description">{selectedItem.description}</p>
               <div className="modal-metadata-grid">
@@ -1425,7 +1422,7 @@ function AppContent() {
                   </span>
                 </div>
                 <div>
-                  <strong>Availability:</strong>
+                  <strong>{t.availability_label}:</strong>
                   <span className={selectedItem.available ? "green" : "red"}>
                     {selectedItem.available ? t.available : t.out_of_stock}
                   </span>
@@ -1465,9 +1462,10 @@ function AppContent() {
                     className={`fav-toggle-modal-btn ${favorites.includes(selectedItem.name) ? "favorited" : ""}`}
                     onClick={() => toggleFavorite(selectedItem.name)}
                   >
+                    <HeartIcon filled={favorites.includes(selectedItem.name)} />
                     {favorites.includes(selectedItem.name)
-                      ? `♥ ${t.remove_fav}`
-                      : `♡ ${t.add_to_fav}`}
+                      ? t.remove_fav
+                      : t.add_to_fav}
                   </button>
                   {selectedItem.available ? (
                     <button
@@ -1535,13 +1533,13 @@ function AppContent() {
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                     <option key={n} value={`Table ${n}`}>
-                      Table {n}
+                      {t.table_word} {n}
                     </option>
                   ))}
                 </select>
               </div>
               <div className="checkout-form-row">
-                <label>Kitchen Notes (Optional)</label>
+                <label>{t.kitchen_notes_optional}</label>
                 <input
                   type="text"
                   placeholder={t.special_notes}
@@ -1550,7 +1548,7 @@ function AppContent() {
                 />
               </div>
               <div className="checkout-total-row">
-                <span>Total:</span>
+                <span>{t.total_label}:</span>
                 <strong>
                   {formatPrice(checkoutItem.price * orderQuantity, currency)}
                 </strong>
